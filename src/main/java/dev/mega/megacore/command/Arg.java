@@ -1,5 +1,5 @@
 package dev.mega.megacore.command;
 
 public interface Arg {
-    void setExecutor()
+    void handleBranch();
 }
