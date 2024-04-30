@@ -2,14 +2,11 @@ package dev.mega.megacore.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class MegaCommandTest {
     CommandManager commandManager;
@@ -18,8 +15,15 @@ class MegaCommandTest {
     void setUp() {
         commandManager = CommandManager.init();
 
-        Argument argument = new Argument("mega") {};
-        commandManager.addCommand(argument);
+        Argument mega = new MegaCommand("mega");
+        Argument give = new Argument("give") {};
+        Argument player = new Argument("Dreaght") {};
+        Argument sum = new Argument("100") {};
+
+        commandManager.addCommand(mega);
+        mega.addArgument("give", give);
+        give.addArgument("Dreaght", player);
+        player.addArgument("100", sum);
     }
 
     /**
@@ -27,19 +31,16 @@ class MegaCommandTest {
      */
     @Test
     void onCommandAssertArgumentsEquals() {
-        Argument argument = mock(Argument.class);
+        // /mega give Dreaght 100
 
         CommandSender sender = mock(CommandSender.class);
         Command command = mock(Command.class);
         String label = "mega";
-        String[] args = new String[0];
+        String[] args = {"give", "Dreaght", "100"};
 
-        when(argument.onCommand(any(), any(), anyString(), any())).thenAnswer(I -> {
-            Assertions.assertEquals(argument.getClass(), I.getMock().getClass());
-            return null;
-        });
-
-        argument.onCommand(sender, command, label, args);
+        for (Argument argument : commandManager.getCommands()) {
+            argument.onCommand(sender, command, label, args);
+        }
     }
 
     @Test
