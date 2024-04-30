@@ -2,13 +2,13 @@ package dev.mega.megacore.command;
 
 import lombok.Getter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class CommandManager {
     private static CommandManager instance;
-    private final Map<String, Argument> commands = new HashMap<>();
+    private final List<Argument> commands = new ArrayList<>();
 
     private CommandManager() {
     }
@@ -18,7 +18,7 @@ public class CommandManager {
         return instance;
     }
 
-    public void addCommand(String label, Argument argument) {
-        commands.put(label, argument);
+    public void addCommand(Argument argument) {
+        commands.add(argument);
     }
 }
