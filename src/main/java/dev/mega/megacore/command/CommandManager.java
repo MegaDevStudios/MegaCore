@@ -1,9 +1,11 @@
 package dev.mega.megacore.command;
 
 import lombok.Getter;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class CommandManager {
@@ -16,6 +18,7 @@ public class CommandManager {
 
     public static CommandManager init() {
         instance = new CommandManager();
+
         return instance;
     }
 

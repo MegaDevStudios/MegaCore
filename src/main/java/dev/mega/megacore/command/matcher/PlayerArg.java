@@ -16,9 +16,15 @@ public class PlayerArg implements ArgumentMatcher {
     }
 
     @Override
-    public boolean matches(String argument) {
+    public boolean matches(String playerName) {
         if (player != null)
-            return Objects.equals(Bukkit.getPlayer(argument), player);
-        return Bukkit.getPlayer(argument) != null;
+            return Objects.equals(Bukkit.getPlayer(playerName), player);
+        return Bukkit.getPlayer(playerName) != null;
+    }
+
+    @Override
+    public String getValue() {
+        if (player == null) return "";
+        return player.getName();
     }
 }

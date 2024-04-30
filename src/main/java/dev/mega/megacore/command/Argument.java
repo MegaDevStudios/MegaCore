@@ -1,6 +1,9 @@
 package dev.mega.megacore.command;
 
+import dev.mega.megacore.command.matcher.ArgumentMatcher;
+
 import lombok.Getter;
+
 import org.bukkit.command.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,8 +18,8 @@ public abstract class Argument implements CommandExecutor, TabCompleter {
         this.matcher = matcher;
     }
 
-    public void addArgument(String label, Argument argument) {
-        subcommands.put(label, argument);
+    public void addArgument(Argument argument) {
+        subcommands.add(argument);
     }
 
     @Override
@@ -28,7 +31,17 @@ public abstract class Argument implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return new ArrayList<>(subcommands.keySet());
+        List<String> tabCompletions = new ArrayList<>();
+
+        for (Argument subcommand : subcommands) {
+            String value = subcommand.getMatcher().getValue();
+            if (value == null || value.isEmpty())
+                continue;
+            tabCompletions.add(value);
+        }
+
+        return tabCompletions;
     }
 }

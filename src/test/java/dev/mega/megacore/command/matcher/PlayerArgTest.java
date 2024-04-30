@@ -26,7 +26,8 @@ class PlayerArgTest {
         Logger logger = Logger.getGlobal();
         when(server.getLogger()).thenReturn(logger);
 
-        Bukkit.setServer(server);
+        if (Bukkit.getServer() == null)
+            Bukkit.setServer(server);
     }
 
     /**

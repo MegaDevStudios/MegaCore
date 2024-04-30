@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 
 import java.util.logging.Logger;
 
@@ -20,9 +18,8 @@ class MegaCoreUtilTest {
 
         when(server.getLogger()).thenReturn(Logger.getGlobal());
 
-        Bukkit.setServer(server);
-
-
+        if (Bukkit.getServer() == null)
+            Bukkit.setServer(server);
     }
 
     @Test
