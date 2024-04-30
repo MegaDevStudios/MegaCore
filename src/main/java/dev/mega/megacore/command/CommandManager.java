@@ -8,7 +8,8 @@ import java.util.List;
 @Getter
 public class CommandManager {
     private static CommandManager instance;
-    private final List<Argument> commands = new ArrayList<>();
+    @Getter
+    private static final List<Argument> commands = new ArrayList<>();
 
     private CommandManager() {
     }
@@ -20,5 +21,11 @@ public class CommandManager {
 
     public void addCommand(Argument argument) {
         commands.add(argument);
+    }
+
+    public void registerCommands(JavaPlugin plugin) {
+        getCommands().forEach(I -> {
+            Objects.requireNonNull(plugin.getCommand(I.getMatcher().getValue())).setExecutor(I);
+        });
     }
 }

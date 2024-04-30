@@ -8,11 +8,11 @@ import java.util.*;
 
 @Getter
 public abstract class Argument implements CommandExecutor, TabCompleter {
-    private final String label;
-    private final Map<String, Argument> subcommands = new HashMap<>();
+    private final ArgumentMatcher matcher;
+    private final List<Argument> subcommands = new ArrayList<>();
 
-    public Argument(String label) {
-        this.label = label;
+    public Argument(ArgumentMatcher matcher) {
+        this.matcher = matcher;
     }
 
     public void addArgument(String label, Argument argument) {
@@ -21,7 +21,10 @@ public abstract class Argument implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        sender.sendMessage(String.valueOf(subcommands.keySet()));
+        //TODO: check if command args does matches for it's types
+        if (matcher.matches(args[0])) {
+            return false;
+        }
         return true;
     }
 

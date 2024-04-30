@@ -14,4 +14,9 @@ public class StringArg implements ArgumentMatcher {
     public boolean matches(String argument) {
         return value == null || argument.equals(value);
     }
+
+    @Override
+    public String getValue() {
+        return value;
+    }
 }
