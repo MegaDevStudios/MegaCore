@@ -57,3 +57,9 @@ processResources {
         expand props
     }
 }
+
+tasks.jar {
+    enabled = true
+    destinationDirectory.set(new File("C:\\Users\\nikit\\IdeaProjects\\MegaCoreImpl\\lib"))
+    archiveFileName = "megacore-${version}.jar"
+}
