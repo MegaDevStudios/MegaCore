@@ -68,7 +68,7 @@ public abstract class Configurable implements Config {
      * @param path  The path to the value.
      * @param value The value to set.
      */
-    public void setValue(String path, String value) {
+    public void setValue(String path, Object value) {
         getConfig().set(path, value);
         saveConfig();
     }
@@ -76,7 +76,7 @@ public abstract class Configurable implements Config {
     /**
      * Deletes the configuration file.
      */
-    private void deleteConfig() {
+    protected void deleteConfig() {
         if (configFile.exists()) {
             configFile.delete();
             plugin.getLogger().info("Deleted configuration file: " + configFile.getName());
