@@ -25,10 +25,7 @@ public abstract class Argument implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         //TODO: check if command args does matches for it's types
-        if (matcher.matches(args[0])) {
-            return false;
-        }
-        return true;
+        return !matcher.matches(args[0]);
     }
 
     @Override

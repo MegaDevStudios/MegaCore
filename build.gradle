@@ -60,6 +60,6 @@ processResources {
 
 tasks.jar {
     enabled = true
-    destinationDirectory.set(new File("C:\\Users\\nikit\\IdeaProjects\\MegaCoreImpl\\lib"))
+    destinationDirectory.set(new File("/home/dreaght/IdeaProjects/SCoca/libs"))
     archiveFileName = "megacore-${version}.jar"
 }

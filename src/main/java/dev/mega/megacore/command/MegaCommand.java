@@ -16,7 +16,9 @@ public class MegaCommand extends Argument {
         Argument currentParent = this;
         for (String arg : args)
             currentParent = getArgumentOrDefault(currentParent, arg);
+
         currentParent.onCommand(sender, command, label, args);
+
         return true;
     }
 

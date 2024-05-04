@@ -22,13 +22,19 @@ public class CommandManager {
         return instance;
     }
 
+    public static CommandManager getInstance() {
+        return instance;
+    }
+
     public void addCommand(Argument argument) {
         commands.add(argument);
     }
 
     public void registerCommands(JavaPlugin plugin) {
-        getCommands().forEach(I -> {
-            Objects.requireNonNull(plugin.getCommand(I.getMatcher().getValue())).setExecutor(I);
+        commands.forEach(arg -> {
+            Objects.requireNonNull(plugin.getCommand(
+
+                    arg.getMatcher().getValue())).setExecutor(arg);
         });
     }
 }

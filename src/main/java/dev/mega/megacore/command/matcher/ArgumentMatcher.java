@@ -5,6 +5,3 @@ public interface ArgumentMatcher {
 
     String getValue();
 }
-
-// new ArgumentIpl(new StringArg("give"));
-// new ArgumentIpl(new PlayerArg());

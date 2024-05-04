@@ -47,6 +47,21 @@ public abstract class Manager implements Config {
         throw new IllegalArgumentException("No configuration found for class: " + configClass.getName());
     }
 
+    /**
+     * Gets the Manager object by Class.
+     * @param managerClass Class of Manager object
+     * @return The Config object if found, otherwise throws an exception.
+     */
+    public <V extends Config> V getManager(Class<V> managerClass) {
+        for (Config managerConfig : configMap.values()) {
+            if (managerConfig instanceof Manager) {
+                return ((Manager) managerConfig).getManager(managerClass);
+            }
+        }
+
+        throw new IllegalArgumentException("No manager found for class: " + managerClass.getName());
+    }
+
     private <T extends Config> T getConfigFromMap(Class<T> configClass) {
         Config config = configMap.get(configClass);
         if (config instanceof Manager) return ((Manager) config).getConfig(configClass);
