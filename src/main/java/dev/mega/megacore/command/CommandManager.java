@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
 public class CommandManager {
-    private static CommandManager instance;
-    @Getter
-    private static final List<Argument> commands = new ArrayList<>();
+    @Getter private static CommandManager instance;
+    @Getter private static final List<Argument> commands = new ArrayList<>();
 
     private CommandManager() {
     }
@@ -19,10 +17,6 @@ public class CommandManager {
     public static CommandManager init() {
         instance = new CommandManager();
 
-        return instance;
-    }
-
-    public static CommandManager getInstance() {
         return instance;
     }
 
