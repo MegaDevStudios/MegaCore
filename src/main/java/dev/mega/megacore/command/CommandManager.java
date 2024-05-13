@@ -1,32 +1,57 @@
 package dev.mega.megacore.command;
 
-import lombok.Getter;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
-public class CommandManager {
-    @Getter private static CommandManager instance;
-    @Getter private static final List<Argument> commands = new ArrayList<>();
+public class CommandManager implements CommandExecutor {
+    private final Map<String, Method> commands = new HashMap<>();
+    private final JavaPlugin plugin;
+    private final Map<Method, Object> instances = new HashMap<>();
 
-    private CommandManager() {
+    public CommandManager(JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 
-    public static CommandManager init() {
-        instance = new CommandManager();
-
-        return instance;
+    public void registerCommands(Object... objects) {
+        for (Object object : objects) {
+            for (Method method : object.getClass().getDeclaredMethods()) {
+                if (method.isAnnotationPresent(CommandHandler.class)) {
+                    CommandHandler annotation = method.getAnnotation(CommandHandler.class);
+                    String cmdName = annotation.name().toLowerCase();
+                    commands.put(cmdName, method);
+                    plugin.getCommand(cmdName).setExecutor(this);
+                    instances.put(method, object);
+                }
+            }
+        }
     }
 
-    public void addCommand(Argument argument) {
-        commands.add(argument);
-    }
-
-    public void registerCommands(JavaPlugin plugin) {
-        commands.forEach(arg -> {
-            Objects.requireNonNull(plugin.getCommand(arg.getMatcher().getValue())).setExecutor(arg);
-        });
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        String cmdName = command.getName().toLowerCase();
+        Method method = commands.get(cmdName);
+        if (method != null) {
+            CommandHandler annotation = method.getAnnotation(CommandHandler.class);
+            if (!sender.hasPermission(annotation.permission())) {
+                sender.sendMessage("You don't have the privilege.");
+                return true;
+            }
+            try {
+                method.invoke(instances.get(method), sender, args);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+                sender.sendMessage("Something went wrong.");
+            }
+            return true;
+        }
+        return false;
     }
 }
+
