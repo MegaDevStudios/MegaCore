@@ -9,16 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MegaCommand extends Argument {
-    public MegaCommand(ArgumentMatcher matcher) { super(matcher); }
+    public MegaCommand(ArgumentMatcher matcher) {
+        super(matcher);
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         Argument currentParent = this;
-        for (String arg : args)
+        for (String arg : args) {
             currentParent = getArgumentOrDefault(currentParent, arg);
-
-        currentParent.onCommand(sender, command, label, args);
-
+            currentParent.onCommand(sender, command, label, args);
+        }
         return true;
     }
 

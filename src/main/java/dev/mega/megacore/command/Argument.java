@@ -24,8 +24,9 @@ public abstract class Argument implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        //TODO: check if command args does matches for it's types
-        return !matcher.matches(args[0]);
+        sender.sendMessage("Usage: " +
+                String.join(",", subcommands.stream().map(I -> I.getMatcher().getValue()).toList()));
+        return true;
     }
 
     @Override

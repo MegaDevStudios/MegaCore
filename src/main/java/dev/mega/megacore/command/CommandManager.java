@@ -26,9 +26,7 @@ public class CommandManager {
 
     public void registerCommands(JavaPlugin plugin) {
         commands.forEach(arg -> {
-            Objects.requireNonNull(plugin.getCommand(
-
-                    arg.getMatcher().getValue())).setExecutor(arg);
+            Objects.requireNonNull(plugin.getCommand(arg.getMatcher().getValue())).setExecutor(arg);
         });
     }
 }

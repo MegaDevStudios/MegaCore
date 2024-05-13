@@ -49,7 +49,7 @@ class MegaCommandTest {
         Argument mega = new MegaCommand(new StringArg("mega"));
         Argument give = new Argument(new StringArg("give")) {};
         Argument player = new Argument(new PlayerArg()) {};
-        Argument sum = new Argument(new StringArg("100")) {};
+        Argument sum = new TestArg(new StringArg("100")) {};
 
         mega.addArgument(give);
         give.addArgument(player);

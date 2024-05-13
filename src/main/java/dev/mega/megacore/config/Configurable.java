@@ -69,7 +69,7 @@ public abstract class Configurable implements Config {
      * @param value The value to set.
      */
     public void setValue(String path, Object value) {
-        getConfig().set(path, value);
+        config.set(path, value);
         saveConfig();
     }
 
@@ -104,7 +104,7 @@ public abstract class Configurable implements Config {
         plugin.getConfig().options().copyDefaults(true);
         YamlConfiguration yamlConfig = new YamlConfiguration();
         try {
-            yamlConfig.load(configFile);
+            yamlConfig.load(configFile.getAbsolutePath());
         } catch (IOException | InvalidConfigurationException e) {
             plugin.getLogger().warning("Failed to load configuration file: " + configFile.getName());
         }
