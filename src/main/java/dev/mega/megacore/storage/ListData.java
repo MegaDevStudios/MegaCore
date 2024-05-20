@@ -13,9 +13,20 @@ public class ListData<T> extends Data<List<T>> {
         return false;
     }
 
+    public T getRegistered(UUID uuid, T value) {
+        if (contains(uuid)) {
+            return getValue(uuid).stream()
+                    .filter(value1 -> value1.equals(value))
+                    .findAny()
+                    .orElse(null);
+        }
+
+        return null;
+    }
+
     public void addValueForUuid(UUID uuid, T value) {
         if (contains(uuid)) {
-            getData().get(uuid).add(value);
+            getValue(uuid).add(value);
         } else {
             List<T> values = getValue(uuid);
             values.add(value);
@@ -26,7 +37,7 @@ public class ListData<T> extends Data<List<T>> {
 
     public boolean removeValueForUuid(UUID uuid, T value) {
         if (contains(uuid)) {
-            return getData().get(uuid).remove(value);
+            return getValue(uuid).remove(value);
         }
         return false;
     }
