@@ -1,5 +1,6 @@
 package dev.mega.megacore.storage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +29,7 @@ public class ListData<T> extends Data<List<T>> {
         if (contains(uuid)) {
             getValue(uuid).add(value);
         } else {
-            List<T> values = getValue(uuid);
+            List<T> values = new ArrayList<>();
             values.add(value);
 
             getData().put(uuid, values);
