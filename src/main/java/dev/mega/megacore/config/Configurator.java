@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Represents a configurable object that handles YAML configuration files.
  */
-public abstract class Configurable implements Config {
+public abstract class Configurator implements Config {
     protected Plugin plugin;
     protected FileConfiguration config;
     protected File configFile;
@@ -25,7 +25,7 @@ public abstract class Configurable implements Config {
      * @param plugin The plugin instance.
      * @param path   The path to the configuration file.
      */
-    protected Configurable(@NotNull Plugin plugin, String... path) {
+    protected Configurator(@NotNull Plugin plugin, String... path) {
         this.plugin = plugin;
         this.parentFolder = new File(plugin.getDataFolder(), String.join("/", path));
         saveResource(path);
