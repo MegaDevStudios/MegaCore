@@ -9,12 +9,12 @@ import java.util.Map;
 /**
  * Represents a Manager to contain Config objects
  */
-public abstract class Manager implements Config {
+public abstract class AbstractManager implements Config {
     @Getter private final Plugin plugin;
     @Getter private final String dataFolder;
     private final Map<Class<? extends Config>, Config> configMap = new HashMap<>();
 
-    public Manager(Plugin plugin, String dataFolder) {
+    public AbstractManager(Plugin plugin, String dataFolder) {
         this.plugin = plugin;
         this.dataFolder = dataFolder;
     }
@@ -38,8 +38,8 @@ public abstract class Manager implements Config {
         if (config != null) return config;
 
         for (Config managerConfig : configMap.values()) {
-            if (managerConfig instanceof Manager) {
-                config = ((Manager) managerConfig).getConfig(configClass);
+            if (managerConfig instanceof AbstractManager) {
+                config = ((AbstractManager) managerConfig).getConfig(configClass);
                 if (config != null) return config;
             }
         }
@@ -54,8 +54,8 @@ public abstract class Manager implements Config {
      */
     public <V extends Config> V getManager(Class<V> managerClass) {
         for (Config managerConfig : configMap.values()) {
-            if (managerConfig instanceof Manager) {
-                return ((Manager) managerConfig).getManager(managerClass);
+            if (managerConfig instanceof AbstractManager) {
+                return ((AbstractManager) managerConfig).getManager(managerClass);
             }
         }
 
@@ -64,7 +64,7 @@ public abstract class Manager implements Config {
 
     private <T extends Config> T getConfigFromMap(Class<T> configClass) {
         Config config = configMap.get(configClass);
-        if (config instanceof Manager) return ((Manager) config).getConfig(configClass);
+        if (config instanceof AbstractManager) return ((AbstractManager) config).getConfig(configClass);
         else return configClass.cast(config);
     }
 }
