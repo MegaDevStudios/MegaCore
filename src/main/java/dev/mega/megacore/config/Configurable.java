@@ -77,8 +77,7 @@ public abstract class Configurable implements Config {
      * Deletes the configuration file.
      */
     protected void deleteConfig() {
-        if (configFile.exists()) {
-            configFile.delete();
+        if (configFile.delete()) {
             plugin.getLogger().info("Deleted configuration file: " + configFile.getName());
         }
     }
