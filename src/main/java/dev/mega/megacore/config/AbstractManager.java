@@ -37,13 +37,6 @@ public abstract class AbstractManager implements Config {
         T config = getConfigFromMap(configClass);
         if (config != null) return config;
 
-        for (Config managerConfig : configMap.values()) {
-            if (managerConfig instanceof AbstractManager) {
-                config = ((AbstractManager) managerConfig).getConfig(configClass);
-                if (config != null) return config;
-            }
-        }
-
         throw new IllegalArgumentException("No configuration found for class: " + configClass.getName());
     }
 
@@ -53,13 +46,10 @@ public abstract class AbstractManager implements Config {
      * @return The Config object if found, otherwise throws an exception.
      */
     public <V extends Config> V getManager(Class<V> managerClass) {
-        for (Config managerConfig : configMap.values()) {
-            if (managerConfig instanceof AbstractManager) {
-                return ((AbstractManager) managerConfig).getManager(managerClass);
-            }
-        }
-
-        throw new IllegalArgumentException("No manager found for class: " + managerClass.getName());
+        return (V) configMap.values().stream()
+                .filter(config -> config instanceof AbstractManager)
+                .filter(config -> config.getClass().equals(managerClass))
+                .findAny().orElse(null);
     }
 
     private <T extends Config> T getConfigFromMap(Class<T> configClass) {
