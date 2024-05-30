@@ -94,7 +94,16 @@ public abstract class Configurator implements Config {
         String filePath = String.join("/", path) + ".yml";
         File file = new File(plugin.getDataFolder(), filePath);
         if (!file.exists()) {
-            plugin.saveResource(filePath, true);
+            if (plugin.getResource(filePath) != null) {
+                plugin.saveResource(filePath, false);
+            } else {
+                try {
+                    configFile.getParentFile().mkdirs();
+                    configFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         this.configFile = file;
     }
