@@ -90,6 +90,19 @@ public abstract class Configurator implements Config {
         }
     }
 
+    private void createResource(String... path) {
+        String filePath = String.join("/", path) + ".yml";
+        File file = new File(plugin.getDataFolder(), filePath);
+        if (!file.exists()) {
+            try {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     private void saveResource(String... path) {
         String filePath = String.join("/", path) + ".yml";
         File file = new File(plugin.getDataFolder(), filePath);
@@ -97,12 +110,7 @@ public abstract class Configurator implements Config {
             if (plugin.getResource(filePath) != null) {
                 plugin.saveResource(filePath, false);
             } else {
-                try {
-                    configFile.getParentFile().mkdirs();
-                    configFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                createResource(path);
             }
         }
         this.configFile = file;
