@@ -1,5 +1,6 @@
 package dev.mega.megacore.config;
 
+import lombok.Getter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,12 +15,13 @@ import java.util.logging.Level;
 /**
  * Represents a configurable object that handles YAML configuration files.
  */
-public abstract class Configurator extends FileConfiguration implements Config {
+public abstract class Configurator implements Config {
     protected final Plugin plugin;
+    @Getter
     protected FileConfiguration config;
     protected File configFile;
 
-    private final HashMap<String, Object> data = new HashMap<>();
+    @Getter private final HashMap<String, Object> data = new HashMap<>();
 
     /**
      * Constructs a Configurator object.

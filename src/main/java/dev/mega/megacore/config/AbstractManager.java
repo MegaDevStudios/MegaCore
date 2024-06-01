@@ -69,4 +69,27 @@ public abstract class AbstractManager implements Config {
                All registered Config classes we found: %s
                """, targetConfig.getName(), visitedClasses));
     }
+
+    public Set<Configurator> getAllConfigs() {
+        Set<Configurator> allConfigs = new HashSet<>();
+        Stack<Config> stack = new Stack<>();
+        stack.push(this);
+
+        while (!stack.isEmpty()) {
+            Config current = stack.pop();
+
+            if (current instanceof Configurator)
+                allConfigs.add((Configurator) current);
+
+            else if (current instanceof AbstractManager) {
+                AbstractManager manager = (AbstractManager) current;
+
+                for (Config config : manager.configMap.values()) {
+                    stack.push(config);
+                }
+            }
+        }
+
+        return allConfigs;
+    }
 }
