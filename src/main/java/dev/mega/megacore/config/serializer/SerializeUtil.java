@@ -19,7 +19,7 @@ public class SerializeUtil {
     public static Map<String, Object> deserialize(Configurator configurator, String sectionPath) {
         Map<String, Object> data = Maps.newConcurrentMap();
 
-        ConfigurationSection section = configurator.getConfigurationSection(sectionPath);
+        ConfigurationSection section = configurator.getConfig().getConfigurationSection(sectionPath);
         if (section == null) return data;
 
         Set<String> keys = section.getKeys(false);
@@ -37,7 +37,7 @@ public class SerializeUtil {
             String path = line.getKey();
             Object value = line.getValue();
 
-            configurator.set(path, value);
+            configurator.getConfig().set(path, value);
         }
     }
 }
