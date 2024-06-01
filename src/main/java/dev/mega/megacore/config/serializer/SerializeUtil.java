@@ -2,9 +2,15 @@ package dev.mega.megacore.config.serializer;
 
 import com.google.common.collect.Maps;
 import dev.mega.megacore.config.Configurator;
+import dev.mega.megacore.util.MegaCoreUtil;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +43,7 @@ public class SerializeUtil {
             String path = line.getKey();
             Object value = line.getValue();
 
-            configurator.getConfig().set(path, value);
+            configurator.setConfigValue(path, value);
         }
     }
 }

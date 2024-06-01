@@ -59,6 +59,12 @@ public abstract class Configurator implements Config {
         data.put(path, value);
     }
 
+    public void setConfigValue(String path, Object value) {
+        setValue(path, value);
+        config.set(path, value);
+        saveConfig();
+    }
+
     /**
      * Deletes the configuration file.
      */
@@ -110,7 +116,7 @@ public abstract class Configurator implements Config {
         }
     }
 
-    private FileConfiguration loadConfig() {
+    public FileConfiguration loadConfig() {
         YamlConfiguration yamlConfig = new YamlConfiguration();
         if (configFile != null && configFile.exists()) {
             try {

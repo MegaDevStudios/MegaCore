@@ -41,7 +41,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
                 HashMap<String, Object> data = configurator.getData();
 
                 for (Map.Entry<String, Object> line : data.entrySet()) {
-                    configurator.setValue(line.getKey(), line.getValue());
+                    configurator.setConfigValue(line.getKey(), line.getValue());
                 }
             }
         }
