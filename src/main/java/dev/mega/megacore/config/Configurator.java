@@ -8,16 +8,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
  * Represents a configurable object that handles YAML configuration files.
  */
-public abstract class Configurator implements Config {
+public abstract class Configurator extends FileConfiguration implements Config {
     protected final Plugin plugin;
     protected FileConfiguration config;
     protected File configFile;
+
+    private final HashMap<String, Object> data = new HashMap<>();
 
     /**
      * Constructs a Configurator object.
@@ -40,75 +42,19 @@ public abstract class Configurator implements Config {
         return configFile != null ? configFile.getAbsolutePath() : "unknown";
     }
 
-    /**
-     * Retrieves a String value from the configuration.
-     *
-     * @param path The path to the value.
-     * @return The string value, or empty string if not found.
-     */
-    public String getString(String path) {
-        return config.getString(path, "");
+    @SuppressWarnings("unchecked")
+    public <T> T getValue(String path) {
+        if (data.containsKey(path)) {
+            return (T) data.get(path);
+        } else {
+            Object value = config.get(path);
+            data.put(path, value);
+            return (T) value;
+        }
     }
 
-    /**
-     * Retrieves a Boolean value from the configuration.
-     *
-     * @param path The path to the value.
-     * @return The Boolean value, or false if not found.
-     */
-    public Boolean getBoolean(String path) {
-        return config.getBoolean(path, false);
-    }
-
-    /**
-     * Retrieves an Integer value from the configuration.
-     *
-     * @param path The path to the value.
-     * @return The integer value, or zero if not found.
-     */
-    public Integer getInt(String path) {
-        return config.getInt(path, 0);
-    }
-
-    /**
-     * Retrieves a Double value from the configuration.
-     *
-     * @param path The path to the value.
-     * @return The double value, or zero if not found.
-     */
-    public Double getDouble(String path) {
-        return config.getDouble(path, 0);
-    }
-
-    /**
-     * Retrieves an Object value from the configuration.
-     *
-     * @param path The path to the value.
-     * @return The object value, or null if not found.
-     */
-    public Object getValue(String path) {
-        return config.get(path);
-    }
-
-    /**
-     * Returns a list of Strings from the configuration.
-     *
-     * @param path The path to the list.
-     * @return The list of strings.
-     */
-    public List<String> getStringList(String path) {
-        return config.getStringList(path);
-    }
-
-    /**
-     * Sets a value in the configuration.
-     *
-     * @param path  The path to the value.
-     * @param value The value to set.
-     */
     public void setValue(String path, Object value) {
-        config.set(path, value);
-        saveConfig();
+        data.put(path, value);
     }
 
     /**
