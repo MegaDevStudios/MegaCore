@@ -33,7 +33,7 @@ public class SerializeUtil {
             data.put(key, section.get(key));
         }
 
-        return new HashMap<>();
+        return data;
     }
 
     public static void serialize(Configurator configurator, ConfigurationSerializable serializable) {
