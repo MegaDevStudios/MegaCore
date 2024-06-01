@@ -1,21 +1,15 @@
 package dev.mega.megacore.manager;
 
 import dev.mega.megacore.MegaCore;
+import lombok.Getter;
+import lombok.Setter;
 
-public abstract class Manager {
+public abstract class Manager implements Reloadable {
     protected final MegaCore megaCore;
+    @Getter @Setter
+    private boolean isRunning = false;
 
     public Manager(MegaCore megaCore) {
         this.megaCore = megaCore;
     }
-
-    /**
-     * Reloads the Manager's settings
-     */
-    public abstract void reload();
-
-    /**
-     * Cleans up the Manager's resources
-     */
-    public abstract void disable();
 }

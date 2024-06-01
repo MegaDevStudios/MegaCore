@@ -2,6 +2,7 @@ package dev.mega.megacore.util;
 
 import org.bukkit.Bukkit;
 
+import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -1,16 +1,17 @@
 package dev.mega.megacore;
 
-import lombok.Getter;
+import dev.mega.megacore.manager.Reloadable;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public abstract class MegaCore extends JavaPlugin {
-    @Getter
-    private static MegaCore instance;
+public abstract class MegaCore extends JavaPlugin implements Reloadable {
+
+    @Override
+    public void onLoad() {
+        this.getLogger().info("Initializing MegaCore plugin.");
+    }
 
     @Override
     public void onEnable() {
-        instance = this;
-
         enable();
     }
 
@@ -18,8 +19,4 @@ public abstract class MegaCore extends JavaPlugin {
     public void onDisable() {
         disable();
     }
-
-    public abstract void enable();
-
-    public abstract void disable();
 }

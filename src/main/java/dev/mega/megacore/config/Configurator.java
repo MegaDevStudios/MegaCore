@@ -44,17 +44,27 @@ public abstract class Configurator implements Config {
      * Retrieves a String value from the configuration.
      *
      * @param path The path to the value.
-     * @return The String value, or null if not found.
+     * @return The string value, or empty string if not found.
      */
     public String getString(String path) {
         return config.getString(path, "");
     }
 
     /**
+     * Retrieves a Boolean value from the configuration.
+     *
+     * @param path The path to the value.
+     * @return The Boolean value, or false if not found.
+     */
+    public Boolean getBoolean(String path) {
+        return config.getBoolean(path, false);
+    }
+
+    /**
      * Retrieves an Integer value from the configuration.
      *
      * @param path The path to the value.
-     * @return The Integer value, or null if not found.
+     * @return The integer value, or zero if not found.
      */
     public Integer getInt(String path) {
         return config.getInt(path, 0);
@@ -64,7 +74,7 @@ public abstract class Configurator implements Config {
      * Retrieves a Double value from the configuration.
      *
      * @param path The path to the value.
-     * @return The Double value, or null if not found.
+     * @return The double value, or zero if not found.
      */
     public Double getDouble(String path) {
         return config.getDouble(path, 0);
@@ -74,7 +84,7 @@ public abstract class Configurator implements Config {
      * Retrieves an Object value from the configuration.
      *
      * @param path The path to the value.
-     * @return The Object value, or null if not found.
+     * @return The object value, or null if not found.
      */
     public Object getValue(String path) {
         return config.get(path);
@@ -84,7 +94,7 @@ public abstract class Configurator implements Config {
      * Returns a list of Strings from the configuration.
      *
      * @param path The path to the list.
-     * @return The list of Strings.
+     * @return The list of strings.
      */
     public List<String> getStringList(String path) {
         return config.getStringList(path);
