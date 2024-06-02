@@ -6,6 +6,7 @@ import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +16,8 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     private final SubFolder configManager;
     private final String managersPath;
 
-    protected MegaCore(SubFolder configManager, String managersPath) {
-        this.configManager = configManager;
+    protected MegaCore(Class<? extends SubFolder> configManager, String managersPath) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        this.configManager = (SubFolder) configManager.getMethod("init", MegaCore.class).invoke(this, this);
         this.managersPath = managersPath;
     }
 
