@@ -1,7 +1,8 @@
 package dev.mega.megacore;
 
-import dev.mega.megacore.config.AbstractManager;
+import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.config.Configurator;
+import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,10 +12,12 @@ import java.util.Set;
 
 public abstract class MegaCore extends JavaPlugin implements Reloadable {
 
-    private final AbstractManager configManager;
+    private final SubFolder configManager;
+    private final String managersPath;
 
-    protected MegaCore(AbstractManager configManager) {
+    protected MegaCore(SubFolder configManager, String managersPath) {
         this.configManager = configManager;
+        this.managersPath = managersPath;
     }
 
     @Override
@@ -25,6 +28,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     @Override
     public void onEnable() {
         enable();
+        MegaManager.init(this, managersPath);
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ClassFinder {
+public class ClassUtil {
 
     public static Set<Class<?>> findSubclasses(String packageName, Class<?> superClass) {
         Set<Class<?>> subclasses = new HashSet<>();

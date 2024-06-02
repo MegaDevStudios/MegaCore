@@ -9,12 +9,12 @@ import java.util.*;
  * Represents a Manager to contain Config objects
  */
 @Getter
-public abstract class AbstractManager implements Config {
+public abstract class SubFolder implements Config {
     private final Plugin plugin;
     private final String dataFolder;
     protected final Map<Class<? extends Config>, Config> configMap = new HashMap<>();
 
-    public AbstractManager(Plugin plugin, String dataFolder) {
+    public SubFolder(Plugin plugin, String dataFolder) {
         this.plugin = plugin;
         this.dataFolder = dataFolder;
     }
@@ -54,8 +54,8 @@ public abstract class AbstractManager implements Config {
                 return targetConfig.cast(current);
             }
 
-            else if (current instanceof AbstractManager) {
-                AbstractManager manager = (AbstractManager) current;
+            else if (current instanceof SubFolder) {
+                SubFolder manager = (SubFolder) current;
                 for (Config config : manager.configMap.values()) {
                     stack.push(config);
                 }
@@ -81,8 +81,8 @@ public abstract class AbstractManager implements Config {
             if (current instanceof Configurator)
                 allConfigs.add((Configurator) current);
 
-            else if (current instanceof AbstractManager) {
-                AbstractManager manager = (AbstractManager) current;
+            else if (current instanceof SubFolder) {
+                SubFolder manager = (SubFolder) current;
 
                 for (Config config : manager.configMap.values()) {
                     stack.push(config);
