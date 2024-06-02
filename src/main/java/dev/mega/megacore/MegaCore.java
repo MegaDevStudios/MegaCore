@@ -29,6 +29,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     public void onEnable() {
         enable();
         MegaManager.init(this, managersPath);
+        MegaManager.getInstance().enable();
     }
 
     @Override
