@@ -5,6 +5,7 @@ import dev.mega.megacore.util.ClassUtil;
 import lombok.Getter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class MegaManager extends Manager {
     }
 
     private void registerManagers() {
-        Set<Class<?>> managerClasses = ClassUtil.findSubclasses(managersPath, Manager.class);
+        List<Class<Manager>> managerClasses = ClassUtil.findSubclasses(megaCore, managersPath, Manager.class);
         for (Class<?> managerClass : managerClasses) {
             try {
                 Manager manager = (Manager) managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
