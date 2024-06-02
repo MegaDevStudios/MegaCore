@@ -1,47 +1,17 @@
 package dev.mega.megacore.util;
 
 import dev.mega.megacore.MegaCore;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class ClassUtil {
-
-//    public static Set<Class<?>> findSubclasses(MegaCore megaCore, String packageName, Class<?> superClass) {
-//        Set<Class<?>> subclasses = new HashSet<>();
-//        try {
-//            ClassLoader classLoader = megaCore.getClass().getClassLoader();
-//            URL resource = classLoader.getResource(packageName.replace('.', '/'));
-//            if (resource == null) {
-//                throw new IllegalArgumentException("Package not found: " + packageName);
-//            }
-//            File directory = new File(megaCore.getClass().getResource(packageName.replace('.', '/')).toExternalForm());
-////            File f = new File(getClass().getResource("/MyResource").toExternalForm());
-//            if (!directory.exists()) {
-//                throw new IllegalArgumentException("Directory does not exist: " + directory);
-//            }
-//            for (File file : directory.listFiles()) {
-//                if (file.getName().endsWith(".class")) {
-//                    String className = packageName + '.' + file.getName().substring(0, file.getName().length() - 6);
-//                    Class<?> clazz = Class.forName(className, true, classLoader);
-//                    if (superClass.isAssignableFrom(clazz) && !clazz.equals(superClass)) {
-//                        subclasses.add(clazz);
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return subclasses;
-//    }
 
     public static <T> List<Class<T>> findSubclasses(MegaCore instance, String basePackage, Class<T> type) {
         JarFile jar = getJar(instance);
