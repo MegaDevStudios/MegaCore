@@ -21,8 +21,6 @@ public abstract class Configurator implements Config {
     protected FileConfiguration config;
     protected File configFile;
 
-    @Getter private final HashMap<String, Object> data = new HashMap<>();
-
     /**
      * Constructs a Configurator object.
      *
@@ -46,17 +44,12 @@ public abstract class Configurator implements Config {
 
     @SuppressWarnings("unchecked")
     public <T> T getValue(String path) {
-        if (data.containsKey(path)) {
-            return (T) data.get(path);
-        } else {
-            Object value = config.get(path);
-            data.put(path, value);
-            return (T) value;
-        }
+        Object value = config.get(path);
+        return (T) value;
     }
 
     public void setValue(String path, Object value) {
-        data.put(path, value);
+        config.set(path, value);
     }
 
     public void setConfigValue(String path, Object value) {
@@ -77,7 +70,7 @@ public abstract class Configurator implements Config {
         }
     }
 
-    private void saveConfig() {
+    public void saveConfig() {
         if (configFile != null) {
             try {
                 config.save(configFile);

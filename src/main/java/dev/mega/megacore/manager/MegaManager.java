@@ -1,13 +1,17 @@
 package dev.mega.megacore.manager;
 
 import dev.mega.megacore.MegaCore;
+import dev.mega.megacore.config.Configurator;
+import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.util.ClassUtil;
 import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Getter
 public class MegaManager extends Manager {
@@ -15,15 +19,17 @@ public class MegaManager extends Manager {
     @Getter private static MegaManager instance;
     private final Map<Class<? extends Manager>, Manager> managers = new HashMap<>();
     private final String managersPath;
+    private final String listenersPath;
 
-    private MegaManager(MegaCore megaCore, String managersPath) {
+    private MegaManager(MegaCore megaCore, String managersPath, String listenersPath) {
         super(megaCore);
         this.managersPath = managersPath;
+        this.listenersPath = listenersPath;
     }
 
-    public static MegaManager init(MegaCore megaCore, String managersPath) {
+    public static MegaManager init(MegaCore megaCore, String managersPath, String listenersPath) {
         if (instance == null) {
-            instance = new MegaManager(megaCore, managersPath);
+            instance = new MegaManager(megaCore, managersPath, listenersPath);
         }
         return getInstance();
     }
@@ -52,28 +58,57 @@ public class MegaManager extends Manager {
             try {
                 Manager manager = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
                 managers.put(managerClass, manager);
-            } catch (Exception e) {
-                MegaCoreUtil.getLogger().severe(e.toString());
+            } catch (NoSuchMethodException e) {
+                MegaCoreUtil.getLogger().severe(String.format("""
+                        [DEVELOPMENT ISSUE] %s
+                        Can't find public constructor has one (MegaCore plugin) argument of
+                        package: %s; class: %s
+                        """, e.getCause(), managerClass.getPackage(), managerClass.getName()));
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                MegaCoreUtil.getLogger().severe(String.format("""
+                        [DEVELOPMENT ISSUE] %s
+                        package: %s; class: %s
+                        Class cannot be instantiated, accessed or invoked!
+                        Ensure it's not abstract class that has constructor with one (MegaCore plugin) argument!
+                        """, e.getCause(), managerClass.getPackage(), managerClass.getName()));
             }
         }
     }
 
+    private void registerListeners() {
+
+    }
+
     @Override
     public void enable() {
-        setRunning(true);
         MegaCoreUtil.getLogger().info("MegaManager enabled!");
         registerManagers();
         for (Manager manager : managers.values()) {
             manager.enable();
         }
+
+        registerListeners();
+
+        setRunning(true);
     }
 
     @Override
     public void disable() {
-        setRunning(false);
+
+        // Disabling managers
         MegaCoreUtil.getLogger().info("MegaManager disabled!");
         for (Manager manager : managers.values()) {
             manager.disable();
         }
+
+        // Saving all configs
+        SubFolder configManager = megaCore.getConfigManager();
+
+        if (configManager != null) {
+            Set<Configurator> configs = configManager.getAllConfigs();
+            configs.forEach(Configurator::saveConfig);
+        }
+
+        setRunning(false);
     }
 }
