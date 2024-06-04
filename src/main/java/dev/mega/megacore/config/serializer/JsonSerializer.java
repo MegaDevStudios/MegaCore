@@ -6,10 +6,8 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import dev.mega.megacore.util.MegaCoreUtil;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
 public final class JsonSerializer {
 
@@ -20,7 +18,7 @@ public final class JsonSerializer {
         createFile(file);
 
         try {
-            FileWriter writer = new FileWriter(file);
+            PrintWriter writer = new PrintWriter(file.getAbsolutePath(), StandardCharsets.UTF_8);
 
             writer.write(jsonString);
             writer.close();
@@ -44,13 +42,11 @@ public final class JsonSerializer {
     }
 
     private static void createFile(File file) {
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException exception) {
-                MegaCoreUtil.getLogger().severe("Cannot create file: " + file.getAbsolutePath());
-            }
-
+        try {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        } catch (IOException exception) {
+            MegaCoreUtil.getLogger().severe("Cannot create file: " + file.getAbsolutePath());
         }
     }
 }
