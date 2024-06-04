@@ -6,6 +6,8 @@ import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.util.ClassUtil;
 import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -76,11 +78,22 @@ public class MegaManager extends Manager {
     }
 
     private void registerListeners() {
-
+        List<Class<Listener>> listenerClasses = ClassUtil.findSubclasses(megaCore, listenersPath, Listener.class);
+        for (Class<? extends Listener> managerClass : listenerClasses) {
+            try {
+                Listener listener = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
+                Bukkit.getPluginManager().registerEvents(listener, megaCore);
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                     InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void enable() {
+        setRunning(true);
+
         MegaCoreUtil.getLogger().info("MegaManager enabled!");
         registerManagers();
         for (Manager manager : managers.values()) {
@@ -88,8 +101,6 @@ public class MegaManager extends Manager {
         }
 
         registerListeners();
-
-        setRunning(true);
     }
 
     @Override

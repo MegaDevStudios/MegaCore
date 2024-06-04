@@ -17,6 +17,8 @@ public final class JsonSerializer {
         Gson gs = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gs.toJson(serializable);
 
+        createFile(file);
+
         try {
             FileWriter writer = new FileWriter(file);
 
@@ -27,8 +29,10 @@ public final class JsonSerializer {
         }
     }
 
-    public static Object deserialize(File file, Class<Object> clazz) {
+    public static Object deserialize(File file, Class<?> clazz) {
         Gson gson = new Gson();
+
+        createFile(file);
 
         try (FileReader reader = new FileReader(file)) {
             return gson.fromJson(reader, clazz);
@@ -37,5 +41,16 @@ public final class JsonSerializer {
         }
 
         return null;
+    }
+
+    private static void createFile(File file) {
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException exception) {
+                MegaCoreUtil.getLogger().severe("Cannot create file: " + file.getAbsolutePath());
+            }
+
+        }
     }
 }
