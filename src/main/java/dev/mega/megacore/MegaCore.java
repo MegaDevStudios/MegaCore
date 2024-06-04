@@ -69,6 +69,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
 
         enable();
         MegaManager.getInstance().enable();
+        registerCommands();
     }
 
     /**
@@ -84,7 +85,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     /**
      * Registers all commands.
      */
-    abstract void registerCommands();
+    protected abstract void registerCommands();
 
     public SubFolder getConfigManager() {
         if (configManager == null) {
