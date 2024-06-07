@@ -7,11 +7,7 @@ import java.util.List;
 
 public final class Color {
     public static List<String> getTranslated(List<String> strings) {
-        List<String> list = new ArrayList<>();
-        for (String s : strings) {
-            list.add(getTranslated(s));
-        }
-        return list;
+        return strings.stream().map(Color::getTranslated).toList();
     }
 
     public static String getTranslated(String string) {
