@@ -1,5 +1,6 @@
 package dev.mega.megacore.inventory;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -46,6 +47,16 @@ public class MegaInventory implements InventoryHolder {
     }
 
     /**
+     * Create a new MegaInventory with a custom size and title.
+     *
+     * @param size  The size of the inventory.
+     * @param title The title (name) of the inventory.
+     */
+    public MegaInventory(int size, Component title) {
+        this(owner -> Bukkit.createInventory(owner, size, title));
+    }
+
+    /**
      * Create a new MegaInventory with a custom type.
      *
      * @param type The type of the inventory.
@@ -61,6 +72,16 @@ public class MegaInventory implements InventoryHolder {
      * @param title The title of the inventory.
      */
     public MegaInventory(InventoryType type, String title) {
+        this(owner -> Bukkit.createInventory(owner, type, title));
+    }
+
+    /**
+     * Create a new MegaInventory with a custom type and title.
+     *
+     * @param type  The type of the inventory.
+     * @param title The title of the inventory.
+     */
+    public MegaInventory(InventoryType type, Component title) {
         this(owner -> Bukkit.createInventory(owner, type, title));
     }
 

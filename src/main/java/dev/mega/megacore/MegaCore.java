@@ -17,10 +17,6 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     private String managersPath = null;
     private String listenersPath = null;
 
-    protected MegaCore() {
-
-    }
-
     /**
      * Represents a constructor of MegaCore class.
      * @param configManager Class that extends SubFolder. "init" method required.
@@ -87,6 +83,10 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
      */
     protected abstract void registerCommands();
 
+    /**
+     * Gets the SubFolder ConfigManager class.
+     * @return ConfigManager.
+     */
     public SubFolder getConfigManager() {
         if (configManager == null) {
             throw new NullPointerException("""

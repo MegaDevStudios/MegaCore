@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class represents a wrapper over HashMap but with List as Map value.
+ * @param <T> Object inside List as Map value.
+ */
 public class ListData<T> extends Data<List<T>> {
     public boolean contains(T value) {
         for (List<T> values : getData().values()) {

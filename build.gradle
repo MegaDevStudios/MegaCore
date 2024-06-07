@@ -1,11 +1,13 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'dev.mega'
 version = '1.2-beta'
 
 repositories {
+    mavenLocal()
     mavenCentral()
     maven {
         name = "papermc-repo"
@@ -38,6 +40,20 @@ java {
     targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+    publications {
+        myJava(MavenPublication) {
+            from components.java
+        }
     }
 }
 

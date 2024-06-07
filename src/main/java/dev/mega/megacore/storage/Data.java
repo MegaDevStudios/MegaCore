@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Class represents a wrapper over HashMap.
+ * @param <T> Object as HashMap value.
+ */
 public class Data<T> {
     private Map<UUID, T> data = new HashMap<>();
 
