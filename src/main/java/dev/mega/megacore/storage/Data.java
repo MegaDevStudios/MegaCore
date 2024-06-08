@@ -1,9 +1,12 @@
 package dev.mega.megacore.storage;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Getter
 /**
  * Class represents a wrapper over HashMap.
  * @param <T> Object as HashMap value.
