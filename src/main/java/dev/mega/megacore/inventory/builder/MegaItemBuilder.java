@@ -1,5 +1,6 @@
 package dev.mega.megacore.inventory.builder;
 
+import dev.mega.megacore.inventory.builder.menu.MenuItemBuilder;
 import dev.mega.megacore.util.Color;
 import dev.mega.megacore.util.MegaCoreUtil;
 import net.kyori.adventure.text.Component;
@@ -185,6 +186,10 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
     public ItemStack toItemStack() {
         return itemStack;
+    }
+
+    public MenuItemBuilder toMenuItem() {
+        return new MenuItemBuilder(itemStack);
     }
 
     public abstract T build();
