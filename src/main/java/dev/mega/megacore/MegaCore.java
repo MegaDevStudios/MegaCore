@@ -1,6 +1,7 @@
 package dev.mega.megacore;
 
 import dev.mega.megacore.config.SubFolder;
+import dev.mega.megacore.inventory.MegaInventory;
 import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import dev.mega.megacore.util.MegaCoreUtil;
@@ -64,8 +65,9 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
         MegaManager.init(this, managersPath, listenersPath);
         MegaManager.getInstance().enable();
 
-        enable();
         registerCommands();
+
+        enable();
     }
 
     /**
