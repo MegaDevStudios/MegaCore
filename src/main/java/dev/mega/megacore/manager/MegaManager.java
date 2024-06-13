@@ -3,6 +3,7 @@ package dev.mega.megacore.manager;
 import dev.mega.megacore.MegaCore;
 import dev.mega.megacore.config.Configurator;
 import dev.mega.megacore.config.SubFolder;
+import dev.mega.megacore.listener.MegaListener;
 import dev.mega.megacore.util.ClassUtil;
 import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
@@ -23,10 +24,16 @@ public class MegaManager extends Manager {
     private final String managersPath;
     private final String listenersPath;
 
+    List<Class<Manager>> managerClasses;
+    List<Class<MegaListener>> listenerClasses;
+
     private MegaManager(MegaCore megaCore, String managersPath, String listenersPath) {
         super(megaCore);
         this.managersPath = managersPath;
         this.listenersPath = listenersPath;
+
+        listenerClasses = ClassUtil.findSubclasses(megaCore, listenersPath, MegaListener.class);
+        managerClasses = ClassUtil.findSubclasses(megaCore, managersPath, Manager.class);
     }
 
     public static MegaManager init(MegaCore megaCore, String managersPath, String listenersPath) {
@@ -37,10 +44,8 @@ public class MegaManager extends Manager {
     }
 
     public static <T extends Manager> T getManager(Class<T> targetConfig) {
-        MegaManager megaManager = getInstance();
-
-        if (megaManager != null) {
-            if (!megaManager.isRunning()) {
+        if (instance != null) {
+            if (!instance.isRunning()) {
                 throw new RuntimeException("MegaManager is disabled!");
             }
             Manager manager = getInstance().getManagers().get(targetConfig);
@@ -49,13 +54,12 @@ public class MegaManager extends Manager {
             }
             throw new IllegalArgumentException("Class is not loaded: " + targetConfig.getName());
         } else {
-            throw new RuntimeException("MegaManager is not initialized yet!");
+            throw new IllegalStateException("MegaManager is not initialized yet!");
         }
 
     }
 
     private void registerManagers() {
-        List<Class<Manager>> managerClasses = ClassUtil.findSubclasses(megaCore, managersPath, Manager.class);
         for (Class<? extends Manager> managerClass : managerClasses) {
             try {
                 Manager manager = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
@@ -78,11 +82,10 @@ public class MegaManager extends Manager {
     }
 
     private void registerListeners() {
-        List<Class<Listener>> listenerClasses = ClassUtil.findSubclasses(megaCore, listenersPath, Listener.class);
-        for (Class<? extends Listener> managerClass : listenerClasses) {
+        for (Class<? extends MegaListener> managerClass : listenerClasses) {
             try {
-                Listener listener = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
-                Bukkit.getPluginManager().registerEvents(listener, megaCore);
+                MegaListener listener = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
+                Bukkit.getPluginManager().registerEvents((Listener) listener, megaCore);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 e.printStackTrace();
@@ -96,11 +99,11 @@ public class MegaManager extends Manager {
 
         MegaCoreUtil.getLogger().info("MegaManager enabled!");
         registerManagers();
+        registerListeners(); // Idk it does not work and I don't know why :/
+
         for (Manager manager : managers.values()) {
             manager.enable();
         }
-
-        registerListeners();
     }
 
     @Override
