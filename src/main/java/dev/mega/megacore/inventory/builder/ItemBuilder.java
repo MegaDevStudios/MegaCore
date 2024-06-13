@@ -18,6 +18,6 @@ public class ItemBuilder extends MegaItemBuilder<ItemBuilder> {
 
     @Override
     public ItemBuilder build() {
-        return null;
+        return this;
     }
 }
