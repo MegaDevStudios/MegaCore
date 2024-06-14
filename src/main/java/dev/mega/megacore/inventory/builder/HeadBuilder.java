@@ -30,6 +30,6 @@ public class HeadBuilder extends MegaItemBuilder<HeadBuilder> {
 
     @Override
     public HeadBuilder build() {
-        return null;
+        return this;
     }
 }

@@ -84,6 +84,6 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
 
     @Override
     public MenuItemBuilder build() {
-        return null;
+        return this;
     }
 }
