@@ -5,11 +5,9 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.logging.Level;
 
 /**
@@ -27,7 +25,7 @@ public abstract class Configurator implements Config {
      * @param plugin The plugin instance.
      * @param path   The path to the configuration file.
      */
-    protected Configurator(@NotNull Plugin plugin, String... path) {
+    protected Configurator(Plugin plugin, String... path) {
         this.plugin = plugin;
         initializeConfigFile(path);
         this.config = loadConfig();

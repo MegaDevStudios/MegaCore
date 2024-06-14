@@ -53,7 +53,7 @@ public class MegaInventory implements InventoryHolder {
      * @param title The title (name) of the inventory.
      */
     public MegaInventory(int size, Component title) {
-        this(owner -> Bukkit.createInventory(owner, size, title));
+        this(owner -> Bukkit.createInventory(owner, size, title.toString()));
     }
 
     /**
@@ -82,7 +82,7 @@ public class MegaInventory implements InventoryHolder {
      * @param title The title of the inventory.
      */
     public MegaInventory(InventoryType type, Component title) {
-        this(owner -> Bukkit.createInventory(owner, type, title));
+        this(owner -> Bukkit.createInventory(owner, type, title.toString()));
     }
 
     public MegaInventory(Function<InventoryHolder, Inventory> inventoryFunction) {

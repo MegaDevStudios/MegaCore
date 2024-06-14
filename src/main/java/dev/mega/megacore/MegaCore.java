@@ -1,7 +1,6 @@
 package dev.mega.megacore;
 
 import dev.mega.megacore.config.SubFolder;
-import dev.mega.megacore.inventory.MegaInventory;
 import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import dev.mega.megacore.util.MegaCoreUtil;
@@ -28,22 +27,20 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
         try {
             this.configManager = (SubFolder) configManager.getMethod("init", MegaCore.class).invoke(this, this);
         } catch (NullPointerException e) {
-            MegaCoreUtil.getLogger().warning(String.format("""
-                    %s: ConfigManager is null! Do not call it if you're using/not using other ConfigManager!
-                    """, e.getCause()));
+            StringBuilder errorMessage = new StringBuilder();
+            errorMessage.append(e.getCause()).append(": ConfigManager is null! Do not call it if you're using/not using other ConfigManager!");
+            MegaCoreUtil.getLogger().warning(errorMessage.toString());
         } catch (NoSuchMethodException e) {
-            MegaCoreUtil.getLogger().severe(String.format("""
-                    %s: ConfigManager class cannot be registered!
-                    Config manager does not contain 'init(MegaCore.class)' method.
-                    """, e.getCause()));
+            StringBuilder errorMessage = new StringBuilder();
+            errorMessage.append(e.getCause()).append(": ConfigManager class cannot be registered!\n");
+            errorMessage.append("Config manager does not contain 'init(MegaCore.class)' method.");
+            MegaCoreUtil.getLogger().severe(errorMessage.toString());
         } catch (IllegalAccessException | InvocationTargetException e) {
-            MegaCoreUtil.getLogger().severe(String.format("""
-                    %s: Can't access `init(MegaCore.class)` method!
-                    Ensure it is a public static method and it contains one (MegaCore megaCore) argument!
-                    
-                    Example of ConfigManager's "init" method:
-                    public static void init(MegaCore plugin) {...}
-                    """, e.getCause()));
+            StringBuilder errorMessage = new StringBuilder();
+            errorMessage.append(e.getCause()).append(": Can't access `init(MegaCore.class)` method!\n");
+            errorMessage.append("Ensure it is a public static method and it contains one (MegaCore megaCore) argument!\n");
+            errorMessage.append("\nExample of ConfigManager's \"init\" method:\npublic static void init(MegaCore plugin) {...}");
+            MegaCoreUtil.getLogger().severe(errorMessage.toString());
         }
         this.managersPath = managersPath;
         this.listenersPath = listenersPath;
@@ -91,12 +88,11 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
      */
     public SubFolder getConfigManager() {
         if (configManager == null) {
-            throw new NullPointerException("""
-                    [DEVELOPMENT ISSUE] ConfigManager has not initialized yet!
-                    
-                    Sorry, but what should we return? You've no ConfigManager correctly registered.
-                    Restart your plugin and register it correctly!
-                    """);
+            StringBuilder sb = new StringBuilder();
+            sb.append("[DEVELOPMENT ISSUE] ConfigManager has not initialized yet!\n\n");
+            sb.append("Sorry, but what should we return? You've no ConfigManager correctly registered.\n");
+            sb.append("Restart your plugin and register it correctly!\n");
+            throw new NullPointerException(sb.toString());
         }
 
         return configManager;

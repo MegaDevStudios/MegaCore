@@ -61,13 +61,12 @@ public abstract class SubFolder implements Config {
                 }
             }
         }
+        StringBuilder sb = new StringBuilder();
+        sb.append("No configuration found for class: %s!\n");
+        sb.append("Ensure you have this class registered!\n");
+        sb.append("All registered Config classes we found: %s\n");
 
-        throw new IllegalArgumentException(String.format("""
-               No configuration found for class: %s!
-               Ensure you have this class registered!
-               
-               All registered Config classes we found: %s
-               """, targetConfig.getName(), visitedClasses));
+        throw new IllegalArgumentException(String.format(sb.toString(), targetConfig.getName(), visitedClasses));
     }
 
     public Set<Configurator> getAllConfigs() {

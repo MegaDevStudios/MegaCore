@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import dev.mega.megacore.util.MegaCoreUtil;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 
 public final class JsonSerializer {
 
@@ -18,7 +17,7 @@ public final class JsonSerializer {
         createFile(file);
 
         try {
-            PrintWriter writer = new PrintWriter(file.getAbsolutePath(), StandardCharsets.UTF_8);
+            PrintWriter writer = new PrintWriter(file.getAbsolutePath());
 
             writer.write(jsonString);
             writer.close();

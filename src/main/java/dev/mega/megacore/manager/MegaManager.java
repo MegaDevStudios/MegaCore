@@ -65,18 +65,20 @@ public class MegaManager extends Manager {
                 Manager manager = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
                 managers.put(managerClass, manager);
             } catch (NoSuchMethodException e) {
-                MegaCoreUtil.getLogger().severe(String.format("""
-                        [DEVELOPMENT ISSUE] %s
-                        Can't find public constructor has one (MegaCore plugin) argument of
-                        package: %s; class: %s
-                        """, e.getCause(), managerClass.getPackage(), managerClass.getName()));
+                StringBuilder sb = new StringBuilder();
+                sb.append("[DEVELOPMENT ISSUE] %s\n");
+                sb.append("Can't find public constructor has one (MegaCore plugin) argument of\n");
+                sb.append("package: %s; class: %s\n");
+                MegaCoreUtil.getLogger().severe(
+                        String.format(sb.toString(), e.getCause(), managerClass.getPackage(), managerClass.getName()));
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                MegaCoreUtil.getLogger().severe(String.format("""
-                        [DEVELOPMENT ISSUE] %s
-                        package: %s; class: %s
-                        Class cannot be instantiated, accessed or invoked!
-                        Ensure it's not abstract class that has constructor with one (MegaCore plugin) argument!
-                        """, e.getCause(), managerClass.getPackage(), managerClass.getName()));
+                StringBuilder sb = new StringBuilder();
+                sb.append("[DEVELOPMENT ISSUE] %s\n");
+                sb.append("package: %s; class: %s\n");
+                sb.append("Class cannot be instantiated, accessed or invoked!\n");
+                sb.append("Ensure it's not abstract class that has constructor with one (MegaCore plugin) argument!\n");
+                MegaCoreUtil.getLogger().severe(
+                        String.format(sb.toString(), e.getCause(), managerClass.getPackage(), managerClass.getName()));
             }
         }
     }

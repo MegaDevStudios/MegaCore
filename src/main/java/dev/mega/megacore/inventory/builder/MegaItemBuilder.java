@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     protected final ItemStack itemStack;
@@ -69,7 +70,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
     public T setName(String name) {
         ItemMeta itemMeta = getItemMeta();
-        itemMeta.displayName(fromStringToComponent(Color.getTranslated(name)));
+        itemMeta.setDisplayName(Color.getTranslated(name));
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -79,7 +80,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
         Color.getTranslated(lore);
 
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -92,20 +93,20 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     public T removeLoreLine(String line) {
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        List<String> lore = new ArrayList<>(fromComponentToString(Objects.requireNonNull(itemMeta.lore())));
+        List<String> lore = new ArrayList<>(itemMeta.getLore());
         lore.remove(line);
 
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
 
     public T removeLoreLine(int index) {
         ItemMeta itemMeta = getItemMeta();
-        List<String> lore = new ArrayList<>(fromComponentToString(Objects.requireNonNull(itemMeta.lore())));
+        List<String> lore = new ArrayList<>(itemMeta.getLore());
 
         lore.remove(index);
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -113,11 +114,11 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     public T addLoreLine(String line) {
         ItemMeta itemMeta = getItemMeta();
         List<String> lore = itemMeta.hasLore()
-                ? new ArrayList<>(fromComponentToString(Objects.requireNonNull(itemMeta.lore())))
+                ? new ArrayList<>(Objects.requireNonNull(itemMeta.getLore()))
                 : new ArrayList<>();
 
         lore.add(line);
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -125,13 +126,13 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     public T addLoreLine(int index, String line) {
         ItemMeta itemMeta = getItemMeta();
         List<String> lore = itemMeta.hasLore()
-                ? new ArrayList<>(fromComponentToString(Objects.requireNonNull(itemMeta.lore())))
+                ? new ArrayList<>(itemMeta.getLore())
                 : new ArrayList<>();
 
         lore.add(index, line);
         Color.getTranslated(lore);
 
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -139,14 +140,14 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     public T setLoreLine(int index, String line) {
         ItemMeta itemMeta = getItemMeta();
         List<String> lore = itemMeta.hasLore()
-                ? new ArrayList<>(fromComponentToString(Objects.requireNonNull(itemMeta.lore())))
+                ? new ArrayList<>(itemMeta.getLore())
                 : new ArrayList<>();
 
         lore.set(index, line);
 
         Color.getTranslated(lore);
 
-        itemMeta.lore(fromStringToComponent(lore));
+        itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
         return build();
     }
@@ -207,7 +208,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     protected List<TextComponent> fromStringToComponent(List<String> strings) {
-        return strings.stream().map(this::fromStringToComponent).toList();
+        return strings.stream().map(this::fromStringToComponent).collect(Collectors.toList());
     }
 
     protected String fromComponentToString(Component component) {
@@ -219,6 +220,6 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     protected List<String> fromComponentToString(List<Component> components) {
-        return components.stream().map(this::fromComponentToString).toList();
+        return components.stream().map(this::fromComponentToString).collect(Collectors.toList());
     }
 }
