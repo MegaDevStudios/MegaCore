@@ -15,28 +15,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 public class MegaManager extends Manager {
 
     @Getter private static MegaManager instance;
     private final Map<Class<? extends Manager>, Manager> managers = new HashMap<>();
-    private final String managersPath;
-    private final String listenersPath;
+    private final List<String> managersPath;
+    private final List<String> listenersPath;
 
     List<Class<Manager>> managerClasses;
     List<Class<MegaListener>> listenerClasses;
 
-    private MegaManager(MegaCore megaCore, String managersPath, String listenersPath) {
+    private MegaManager(MegaCore megaCore, List<String> managersPath, List<String> listenersPath) {
         super(megaCore);
         this.managersPath = managersPath;
         this.listenersPath = listenersPath;
 
-        listenerClasses = ClassUtil.findSubclasses(megaCore, listenersPath, MegaListener.class);
-        managerClasses = ClassUtil.findSubclasses(megaCore, managersPath, Manager.class);
+        listenerClasses = listenersPath.stream()
+                .flatMap(lp -> ClassUtil.findSubclasses(megaCore, lp, MegaListener.class).stream())
+                .collect(Collectors.toList());
+
+        managerClasses = managersPath.stream()
+                .flatMap(mp -> ClassUtil.findSubclasses(megaCore, mp, Manager.class).stream())
+                .collect(Collectors.toList());
     }
 
-    public static MegaManager init(MegaCore megaCore, String managersPath, String listenersPath) {
+    public static MegaManager init(MegaCore megaCore, List<String> managersPath, List<String> listenersPath) {
         if (instance == null) {
             instance = new MegaManager(megaCore, managersPath, listenersPath);
         }

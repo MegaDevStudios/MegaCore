@@ -4,18 +4,22 @@ import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import dev.mega.megacore.util.MegaCoreUtil;
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class represents entrypoint of JavaPlugin instance.
  */
+@Getter
 public abstract class MegaCore extends JavaPlugin implements Reloadable {
 
     private SubFolder configManager = null;
-    private String managersPath = null;
-    private String listenersPath = null;
+    private List<String> managersPath = new ArrayList<>();
+    private List<String> listenersPath = new ArrayList<>();
 
     /**
      * Represents a constructor of MegaCore class.
@@ -23,12 +27,13 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
      * @param managersPath Managers package path. All managers extend Manager class.
      * @param listenersPath Listeners package path.
      */
-    protected MegaCore(Class<? extends SubFolder> configManager, String managersPath, String listenersPath) {
+    protected MegaCore(Class<? extends SubFolder> configManager, List<String> managersPath, List<String> listenersPath) {
         try {
             this.configManager = (SubFolder) configManager.getMethod("init", MegaCore.class).invoke(this, this);
         } catch (NullPointerException e) {
             StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append(e.getCause()).append(": ConfigManager is null! Do not call it if you're using/not using other ConfigManager!");
+            errorMessage.append(e.getCause())
+                    .append(": ConfigManager is null! Do not call it if you're using/not using other ConfigManager!");
             MegaCoreUtil.getLogger().warning(errorMessage.toString());
         } catch (NoSuchMethodException e) {
             StringBuilder errorMessage = new StringBuilder();
@@ -39,7 +44,8 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
             StringBuilder errorMessage = new StringBuilder();
             errorMessage.append(e.getCause()).append(": Can't access `init(MegaCore.class)` method!\n");
             errorMessage.append("Ensure it is a public static method and it contains one (MegaCore megaCore) argument!\n");
-            errorMessage.append("\nExample of ConfigManager's \"init\" method:\npublic static void init(MegaCore plugin) {...}");
+            errorMessage.append("\nExample of ConfigManager's \"init\" method:\n" +
+                    "public static void init(MegaCore plugin) {...}");
             MegaCoreUtil.getLogger().severe(errorMessage.toString());
         }
         this.managersPath = managersPath;
