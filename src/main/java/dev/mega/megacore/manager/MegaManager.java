@@ -4,22 +4,19 @@ import dev.mega.megacore.MegaCore;
 import dev.mega.megacore.config.Configurator;
 import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.listener.MegaListener;
+import dev.mega.megacore.manager.priority.ManagerPriority;
 import dev.mega.megacore.util.ClassUtil;
 import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Getter
 public class MegaManager extends Manager {
-
     @Getter private static MegaManager instance;
     private final Map<Class<? extends Manager>, Manager> managers = new HashMap<>();
     private final List<String> managersPath;
@@ -93,11 +90,19 @@ public class MegaManager extends Manager {
         for (Class<? extends MegaListener> managerClass : listenerClasses) {
             try {
                 MegaListener listener = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
-                Bukkit.getPluginManager().registerEvents((Listener) listener, megaCore);
+                Bukkit.getPluginManager().registerEvents(listener, megaCore);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void enableManagers() {
+        Collections.sort(new ArrayList<>(managers.values()));
+
+        for (Manager manager : managers.values()) {
+            manager.enable();
         }
     }
 
@@ -107,11 +112,9 @@ public class MegaManager extends Manager {
 
         MegaCoreUtil.getLogger().info("MegaManager enabled!");
         registerManagers();
-        registerListeners(); // Idk it does not work and I don't know why :/
+        registerListeners(); // IDK it does not work and I don't know why :/
 
-        for (Manager manager : managers.values()) {
-            manager.enable();
-        }
+        enableManagers();
     }
 
     @Override

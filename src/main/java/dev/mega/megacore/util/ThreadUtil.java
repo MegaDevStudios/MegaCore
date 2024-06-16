@@ -1,5 +1,7 @@
 package dev.mega.megacore.util;
 
+import jdk.jfr.internal.StringPool;
+
 import java.util.HashMap;
 
 public class ThreadUtil {
@@ -22,7 +24,7 @@ public class ThreadUtil {
     }
 
     public static void stop(int id) {
-        Thread thread = threads.remove(id);
+        Thread thread = (Thread) threads.remove(id);
         if (thread != null) thread.interrupt();
     }
 
