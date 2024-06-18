@@ -7,5 +7,5 @@ import org.bukkit.event.HandlerList;
 
 @Getter @Setter
 public abstract class MegaEvent extends Event {
-    private final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 }

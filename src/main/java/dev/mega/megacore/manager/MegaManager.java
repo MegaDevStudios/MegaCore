@@ -99,9 +99,10 @@ public class MegaManager extends Manager {
     }
 
     private void enableManagers() {
-        Collections.sort(new ArrayList<>(managers.values()));
+        List<Manager> managerList = new ArrayList<>(managers.values());
+        Collections.sort(managerList);
 
-        for (Manager manager : managers.values()) {
+        for (Manager manager : managerList) {
             manager.enable();
         }
     }
