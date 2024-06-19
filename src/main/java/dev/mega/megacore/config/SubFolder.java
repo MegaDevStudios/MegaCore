@@ -28,11 +28,10 @@ public abstract class SubFolder implements Config {
 
     /**
      * Adds a Config object to map.
-     * @param configClass Class to add.
      * @param config Config object to add.
      */
-    public void addConfig(Class<? extends Config> configClass, Config config) {
-        configMap.put(configClass, config);
+    public void addConfig(Config config) {
+        configMap.put(config.getClass(), config);
     }
 
     /**
