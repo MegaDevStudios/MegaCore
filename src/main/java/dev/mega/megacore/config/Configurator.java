@@ -46,6 +46,10 @@ public abstract class Configurator implements Config {
         return (T) value;
     }
 
+    public <T> T getValue(String path, T def) {
+        return getValue(path) ? null : def;
+    }
+
     public void setValue(String path, Object value) {
         config.set(path, value);
     }
