@@ -4,12 +4,10 @@ import dev.mega.megacore.MegaCore;
 import dev.mega.megacore.config.Configurator;
 import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.listener.MegaListener;
-import dev.mega.megacore.manager.priority.ManagerPriority;
 import dev.mega.megacore.util.ClassUtil;
 import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -46,16 +44,16 @@ public class MegaManager extends Manager {
         return getInstance();
     }
 
-    public static <T extends Manager> T getManager(Class<T> targetConfig) {
+    public static <T extends Manager> T getManager(Class<T> managerClass) {
         if (instance != null) {
             if (!instance.isRunning()) {
                 throw new RuntimeException("MegaManager is disabled!");
             }
-            Manager manager = getInstance().getManagers().get(targetConfig);
-            if (targetConfig.isInstance(manager)) {
-                return targetConfig.cast(manager);
+            Manager manager = instance.getManagers().get(managerClass);
+            if (managerClass.isInstance(manager)) {
+                return managerClass.cast(manager);
             }
-            throw new IllegalArgumentException("Class is not loaded: " + targetConfig.getName());
+            throw new IllegalArgumentException("Class is not loaded: " + managerClass.getName());
         } else {
             throw new IllegalStateException("MegaManager is not initialized yet!");
         }

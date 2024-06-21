@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
-
 public abstract class Manager implements Reloadable, Comparable<Manager> {
     protected final MegaCore megaCore;
     @Getter @Setter
@@ -29,19 +27,9 @@ public abstract class Manager implements Reloadable, Comparable<Manager> {
         else if (thisManagerPriority == null)
             return -1;
 
-        int thisPriority = thisManagerPriority.priority();
-        int otherPriority = otherManagerPriority.priority();
-        int thisEnumPriority = thisManagerPriority.enumPriority().getSlot();
-        int otherEnumPriority = otherManagerPriority.enumPriority().getSlot();
+        int thisEnumPriority = thisManagerPriority.priority().getSlot();
+        int otherEnumPriority = otherManagerPriority.priority().getSlot();
 
-        if (thisPriority != -1 && otherPriority != -1) {
-            return thisPriority - otherPriority;
-        } else if (thisPriority != -1) {
-            return thisPriority - otherEnumPriority;
-        } else if (otherPriority != -1) {
-            return thisEnumPriority - otherPriority;
-        } else {
-            return thisEnumPriority - otherEnumPriority;
-        }
+        return thisEnumPriority - otherEnumPriority;
     }
 }

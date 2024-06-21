@@ -16,22 +16,19 @@ import java.util.logging.Logger;
  */
 @Getter
 public abstract class MegaCore extends JavaPlugin implements Reloadable {
+    private final Class<? extends SubFolder> configManagerClass;
+
     private final List<String> managersPath;
     private final List<String> listenersPath;
 
     /**
      * Represents a constructor of MegaCore class.
-     * @param configManager ConfigManager object.
+     * @param configManagerClass ConfigManager class.
      * @param managersPath Managers package path. All managers extend Manager class.
      * @param listenersPath Listeners package path.
      */
-    protected MegaCore(Class<? extends SubFolder> configManager, List<String> managersPath, List<String> listenersPath) {
-        try {
-            SubFolder.setConfigManager(configManager.getConstructor(MegaCore.class).newInstance(this));
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            Logger.getGlobal().severe("Your config manager has no public constructor with MegaCore argument!");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
+    protected MegaCore(Class<? extends SubFolder> configManagerClass, List<String> managersPath, List<String> listenersPath) {
+        this.configManagerClass = configManagerClass;
 
         this.managersPath = managersPath;
         this.listenersPath = listenersPath;
@@ -43,6 +40,13 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     @Override
     public void onLoad() {
         this.getLogger().info("Initializing MegaCore plugin.");
+
+        try {
+            SubFolder.setConfigManager(configManagerClass.getConstructor(MegaCore.class).newInstance(this));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            Logger.getGlobal().severe("Your config manager has no public constructor with MegaCore argument!");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         MegaManager.init(this, managersPath, listenersPath);
         enableMegaManager();
