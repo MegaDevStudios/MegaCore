@@ -38,6 +38,7 @@ public abstract class SubFolder implements Config {
      * Gets a Config object by Class.
      * @param targetConfig Class of Config object.
      * @return The Config object if found, otherwise throws an exception.
+     * @param <T> Parameter whose type will be returned.
      */
     public <T extends Config> T getConfig(Class<T> targetConfig) {
         Set<Class<?>> visitedClasses = new HashSet<>();
