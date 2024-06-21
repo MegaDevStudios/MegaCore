@@ -14,9 +14,23 @@ public abstract class SubFolder implements Config {
     private final String dataFolder;
     protected final Map<Class<? extends Config>, Config> configMap = new HashMap<>();
 
+    /**
+     * -- GETTER --
+     *  Gets the main config manager class.
+     */
+    @Getter
+    private static SubFolder configManager;
+
     public SubFolder(Plugin plugin, String dataFolder) {
         this.plugin = plugin;
         this.dataFolder = dataFolder;
+    }
+
+    /**
+     * Sets the main config manager class.
+     */
+    public static void setConfigManager(SubFolder configManager) {
+        SubFolder.configManager = configManager;
     }
 
     /**

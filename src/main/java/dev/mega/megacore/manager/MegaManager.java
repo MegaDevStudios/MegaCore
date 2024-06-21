@@ -128,7 +128,7 @@ public class MegaManager extends Manager {
         }
 
         // Saving all configs
-        SubFolder configManager = megaCore.getConfigManager();
+        SubFolder configManager = SubFolder.getConfigManager();
 
         if (configManager != null) {
             Set<Configurator> configs = configManager.getAllConfigs();

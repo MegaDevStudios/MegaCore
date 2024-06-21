@@ -3,51 +3,36 @@ package dev.mega.megacore;
 import dev.mega.megacore.config.SubFolder;
 import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
-import dev.mega.megacore.util.MegaCoreUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Class represents entrypoint of JavaPlugin instance.
  */
 @Getter
 public abstract class MegaCore extends JavaPlugin implements Reloadable {
-
-    private SubFolder configManager = null;
-    private List<String> managersPath = new ArrayList<>();
-    private List<String> listenersPath = new ArrayList<>();
+    private final List<String> managersPath;
+    private final List<String> listenersPath;
 
     /**
      * Represents a constructor of MegaCore class.
-     * @param configManager Class that extends SubFolder. "init" method required.
+     * @param configManager ConfigManager object.
      * @param managersPath Managers package path. All managers extend Manager class.
      * @param listenersPath Listeners package path.
      */
     protected MegaCore(Class<? extends SubFolder> configManager, List<String> managersPath, List<String> listenersPath) {
         try {
-            this.configManager = (SubFolder) configManager.getMethod("init", MegaCore.class).invoke(this, this);
-        } catch (NullPointerException e) {
-            StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append(e.getCause())
-                    .append(": ConfigManager is null! Do not call it if you're using/not using other ConfigManager!");
-            MegaCoreUtil.getLogger().warning(errorMessage.toString());
-        } catch (NoSuchMethodException e) {
-            StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append(e.getCause()).append(": ConfigManager class cannot be registered!\n");
-            errorMessage.append("Config manager does not contain 'init(MegaCore.class)' method.");
-            MegaCoreUtil.getLogger().severe(errorMessage.toString());
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append(e.getCause()).append(": Can't access `init(MegaCore.class)` method!\n");
-            errorMessage.append("Ensure it is a public static method and it contains one (MegaCore megaCore) argument!\n");
-            errorMessage.append("\nExample of ConfigManager's \"init\" method:\n" +
-                    "public static void init(MegaCore plugin) {...}");
-            MegaCoreUtil.getLogger().severe(errorMessage.toString());
+            SubFolder.setConfigManager(configManager.getConstructor(MegaCore.class).newInstance(this));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            Logger.getGlobal().severe("Your config manager has no public constructor with MegaCore argument!");
+            Bukkit.getPluginManager().disablePlugin(this);
         }
+
         this.managersPath = managersPath;
         this.listenersPath = listenersPath;
     }
@@ -58,6 +43,9 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     @Override
     public void onLoad() {
         this.getLogger().info("Initializing MegaCore plugin.");
+
+        MegaManager.init(this, managersPath, listenersPath);
+        enableMegaManager();
     }
 
     /**
@@ -65,11 +53,9 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
      */
     @Override
     public void onEnable() {
-        MegaManager.init(this, managersPath, listenersPath);
+        enable();
 
         registerCommands();
-
-        enable();
     }
 
     /**
@@ -87,24 +73,7 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
      */
     protected abstract void registerCommands();
 
-    public void enableMegaManager() {
+    protected void enableMegaManager() {
         MegaManager.getInstance().enable();
     }
-
-    /**
-     * Gets the SubFolder ConfigManager class.
-     * @return ConfigManager.
-     */
-    public SubFolder getConfigManager() {
-        if (configManager == null) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[DEVELOPMENT ISSUE] ConfigManager has not initialized yet!\n\n");
-            sb.append("Sorry, but what should we return? You've no ConfigManager correctly registered.\n");
-            sb.append("Restart your plugin and register it correctly!\n");
-            throw new NullPointerException(sb.toString());
-        }
-
-        return configManager;
-    }
-
 }
