@@ -1,5 +1,7 @@
 package dev.mega.megacore.util;
 
+import lombok.Getter;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,11 +9,21 @@ import java.util.regex.Pattern;
 /**
  * An immutable class that holds a map of placeholders and their values
  */
+@Getter
 public final class StringPlaceholders {
 
     private final static StringPlaceholders EMPTY = new StringPlaceholders(Collections.emptyMap(), "%", "%");
 
-    private final String startDelimiter, endDelimiter;
+    /**
+     * -- GETTER --
+     */
+    private final String startDelimiter, /**
+     * -- GETTER --
+     */
+            endDelimiter;
+    /**
+     * -- GETTER --
+     */
     private final Map<String, String> placeholders;
 
     private StringPlaceholders(Map<String, String> placeholders, String startDelimiter, String endDelimiter) {
@@ -30,27 +42,6 @@ public final class StringPlaceholders {
         for (String key : this.placeholders.keySet())
             string = string.replaceAll(Pattern.quote(this.startDelimiter + key + this.endDelimiter), Matcher.quoteReplacement(this.placeholders.get(key)));
         return string;
-    }
-
-    /**
-     * @return an unmodifiable map of the placeholders
-     */
-    public Map<String, String> getPlaceholders() {
-        return this.placeholders;
-    }
-
-    /**
-     * @return the start delimiter
-     */
-    public String getStartDelimiter() {
-        return this.startDelimiter;
-    }
-
-    /**
-     * @return the end delimiter
-     */
-    public String getEndDelimiter() {
-        return this.endDelimiter;
     }
 
     /**
@@ -90,91 +81,24 @@ public final class StringPlaceholders {
     }
 
     /**
-     * Creates a new StringPlaceholders instance with delimiters set to % and two placeholders added
+     * Creates a new StringPlaceholders instance with delimiters set to % and one placeholder added
+     * {@code StringPlaceholders.of("some string %placeholder%", new Object())}
      *
-     * @param placeholder1 the first placeholder to add
-     * @param value1 the value to replace the first placeholder with
-     * @param placeholder2 the second placeholder to add
-     * @param value2 the value to replace the second placeholder with
-     * @return a new StringPlaceholders instance with delimiters set to % and two placeholders added
+     * @param placeholdersAndValues the placeholders to add and the values to replace
+     * @return a new StringPlaceholders instance with delimiters set to % and one placeholder added
      */
-    public static StringPlaceholders of(String placeholder1, Object value1,
-                                        String placeholder2, Object value2) {
-        return builder(placeholder1, value1)
-                .add(placeholder2, value2)
-                .build();
-    }
+    public static StringPlaceholders of(Object... placeholdersAndValues) {
+        if (placeholdersAndValues.length % 2 != 0) {
+            throw new IllegalArgumentException("[DEV ISSUE] Invalid number of arguments.");
+        }
 
-    /**
-     * Creates a new StringPlaceholders instance with delimiters set to % and three placeholders added
-     *
-     * @param placeholder1 the first placeholder to add
-     * @param value1 the value to replace the first placeholder with
-     * @param placeholder2 the second placeholder to add
-     * @param value2 the value to replace the second placeholder with
-     * @param placeholder3 the third placeholder to add
-     * @param value3 the value to replace the third placeholder with
-     * @return a new StringPlaceholders instance with delimiters set to % and three placeholders added
-     */
-    public static StringPlaceholders of(String placeholder1, Object value1,
-                                        String placeholder2, Object value2,
-                                        String placeholder3, Object value3) {
-        return builder(placeholder1, value1)
-                .add(placeholder2, value2)
-                .add(placeholder3, value3)
-                .build();
-    }
+        StringPlaceholders.Builder builder = builder(placeholdersAndValues[0].toString(), placeholdersAndValues[1]);
 
-    /**
-     * Creates a new StringPlaceholders instance with delimiters set to % and four placeholders added
-     *
-     * @param placeholder1 the first placeholder to add
-     * @param value1 the value to replace the first placeholder with
-     * @param placeholder2 the second placeholder to add
-     * @param value2 the value to replace the second placeholder with
-     * @param placeholder3 the third placeholder to add
-     * @param value3 the value to replace the third placeholder with
-     * @param placeholder4 the fourth placeholder to add
-     * @param value4 the value to replace the fourth placeholder with
-     * @return a new StringPlaceholders instance with delimiters set to % and four placeholders added
-     */
-    public static StringPlaceholders of(String placeholder1, Object value1,
-                                        String placeholder2, Object value2,
-                                        String placeholder3, Object value3,
-                                        String placeholder4, Object value4) {
-        return builder(placeholder1, value1)
-                .add(placeholder2, value2)
-                .add(placeholder3, value3)
-                .add(placeholder4, value4)
-                .build();
-    }
+        for (int i = 2; i < placeholdersAndValues.length; i += 2) {
+            builder.add(placeholdersAndValues[i].toString(), placeholdersAndValues[i + 1]);
+        }
 
-    /**
-     * Creates a new StringPlaceholders instance with delimiters set to % and five placeholders added
-     *
-     * @param placeholder1 the first placeholder to add
-     * @param value1 the value to replace the first placeholder with
-     * @param placeholder2 the second placeholder to add
-     * @param value2 the value to replace the second placeholder with
-     * @param placeholder3 the third placeholder to add
-     * @param value3 the value to replace the third placeholder with
-     * @param placeholder4 the fourth placeholder to add
-     * @param value4 the value to replace the fourth placeholder with
-     * @param placeholder5 the fifth placeholder to add
-     * @param value5 the value to replace the fifth placeholder with
-     * @return a new StringPlaceholders instance with delimiters set to % and five placeholders added
-     */
-    public static StringPlaceholders of(String placeholder1, Object value1,
-                                        String placeholder2, Object value2,
-                                        String placeholder3, Object value3,
-                                        String placeholder4, Object value4,
-                                        String placeholder5, Object value5) {
-        return builder(placeholder1, value1)
-                .add(placeholder2, value2)
-                .add(placeholder3, value3)
-                .add(placeholder4, value4)
-                .add(placeholder5, value5)
-                .build();
+        return builder.build();
     }
 
     public static class Builder {

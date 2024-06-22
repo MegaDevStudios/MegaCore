@@ -10,7 +10,12 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -85,9 +90,9 @@ public class MegaManager extends Manager {
     }
 
     private void registerListeners() {
-        for (Class<? extends MegaListener> managerClass : listenerClasses) {
+        for (Class<? extends MegaListener> listenerClass : listenerClasses) {
             try {
-                MegaListener listener = managerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
+                MegaListener listener = listenerClass.getDeclaredConstructor(MegaCore.class).newInstance(megaCore);
                 Bukkit.getPluginManager().registerEvents(listener, megaCore);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
