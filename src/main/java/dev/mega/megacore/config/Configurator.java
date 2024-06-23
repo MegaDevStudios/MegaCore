@@ -53,15 +53,15 @@ public abstract class Configurator implements Config {
     }
 
     public String getColoredString(String path) {
-        return Color.getTranslated((String) getValue(path));
+        return getColoredString(path, "");
     }
 
     public String getColoredString(String path, String def) {
-        return Color.getTranslated(getValue(path, def));
+        return getColoredString(path, def, '&');
     }
 
     public String getColoredString(String path, char symbol) {
-        return Color.getTranslated((String) getValue(path), symbol);
+        return getColoredString(path, "", symbol);
     }
 
     public String getColoredString(String path, String def, char symbol) {
