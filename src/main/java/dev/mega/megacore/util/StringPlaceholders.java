@@ -107,7 +107,6 @@ public final class StringPlaceholders {
         private final Map<String, String> placeholders;
 
         private Builder() {
-            //фикс гитхаба
             this.startDelimiter = "%";
             this.endDelimiter = "%";
             this.placeholders = new HashMap<>();
