@@ -1,5 +1,6 @@
 package dev.mega.megacore.config;
 
+import dev.mega.megacore.util.Color;
 import lombok.Getter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,7 +48,24 @@ public abstract class Configurator implements Config {
     }
 
     public <T> T getValue(String path, T def) {
-        return getValue(path) ? null : def;
+        T value = getValue(path);
+        return value == null ? def : value;
+    }
+
+    public String getColoredString(String path) {
+        return Color.getTranslated((String) getValue(path));
+    }
+
+    public String getColoredString(String path, String def) {
+        return Color.getTranslated(getValue(path, def));
+    }
+
+    public String getColoredString(String path, char symbol) {
+        return Color.getTranslated((String) getValue(path), symbol);
+    }
+
+    public String getColoredString(String path, String def, char symbol) {
+        return Color.getTranslated(getValue(path, def), symbol);
     }
 
     public void setValue(String path, Object value) {
