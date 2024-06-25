@@ -1,19 +1,10 @@
 package dev.mega.megacore.inventory.builder;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import dev.mega.megacore.inventory.builder.object.MegaStack;
 
 public class ItemBuilder extends MegaItemBuilder<ItemBuilder> {
-    public ItemBuilder(ItemStack itemStack) {
+    public ItemBuilder(MegaStack itemStack) {
         super(itemStack);
-    }
-
-    public ItemBuilder(Material type, int amount) {
-        super(type, amount);
-    }
-
-    public ItemBuilder(Material type) {
-        super(type);
     }
 
     @Override
