@@ -1,9 +1,8 @@
 package dev.mega.megacore.inventory.builder.menu;
 
 import dev.mega.megacore.inventory.builder.MegaItemBuilder;
-import org.bukkit.Material;
+import dev.mega.megacore.inventory.builder.object.MegaStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +11,8 @@ import java.util.List;
 public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
     List<ClickAction> clickActions = new ArrayList<>();
 
-    public MenuItemBuilder(ItemStack itemStack) {
-        super(itemStack);
-    }
-
-    public MenuItemBuilder(Material type, int amount) {
-        super(type, amount);
-    }
-
-    public MenuItemBuilder(Material type) {
-        super(type);
+    public MenuItemBuilder(MegaStack megaStack) {
+        super(megaStack);
     }
 
     public MenuItemBuilder addClickAction(ClickAction action) {

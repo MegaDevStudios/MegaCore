@@ -1,6 +1,7 @@
 package dev.mega.megacore.inventory.builder;
 
 import dev.mega.megacore.inventory.builder.menu.MenuItemBuilder;
+import dev.mega.megacore.inventory.builder.object.MegaStack;
 import dev.mega.megacore.util.Color;
 import dev.mega.megacore.util.MegaCoreUtil;
 import net.kyori.adventure.text.Component;
@@ -16,18 +17,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
-    protected final ItemStack itemStack;
+    protected final MegaStack stack;
 
-    public MegaItemBuilder(ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
-
-    public MegaItemBuilder(Material type, int amount) {
-        this(new ItemStack(type, amount));
-    }
-
-    public MegaItemBuilder(Material type) {
-        this(type, 1);
+    public MegaItemBuilder(MegaStack stack) {
+        this.stack = stack;
     }
 
     @SuppressWarnings("unchecked")
@@ -41,34 +34,34 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     public T setType(Material type) {
-        itemStack.setType(type);
+        toItemStack().setType(type);
         return build();
     }
 
     public T setAmount(int amount) {
-        itemStack.setAmount(amount);
+        toItemStack().setAmount(amount);
         return build();
     }
 
     public T addEnchantment(Enchantment enchantment, int level) {
-        itemStack.addEnchantment(enchantment, level);
+        toItemStack().addEnchantment(enchantment, level);
         return build();
     }
 
     public T addUnsafeEnchantment(Enchantment enchantment, int level) {
-        itemStack.addUnsafeEnchantment(enchantment, level);
+        toItemStack().addUnsafeEnchantment(enchantment, level);
         return build();
     }
 
     public T removeEnchantment(Enchantment enchantment) {
-        itemStack.removeEnchantment(enchantment);
+        toItemStack().removeEnchantment(enchantment);
         return build();
     }
 
     public T setName(String name) {
         ItemMeta itemMeta = getItemMeta();
         itemMeta.setDisplayName(Color.getTranslated(name));
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -78,7 +71,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
         Color.getTranslated(lore);
 
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -88,13 +81,13 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     public T removeLoreLine(String line) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        ItemMeta itemMeta = toItemStack().getItemMeta();
 
         List<String> lore = new ArrayList<>(itemMeta.getLore());
         lore.remove(line);
 
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -104,7 +97,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
         lore.remove(index);
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -116,7 +109,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
         lore.add(line);
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -130,7 +123,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
         Color.getTranslated(lore);
 
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -145,35 +138,35 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
         Color.getTranslated(lore);
 
         itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
     public T addFlags(ItemFlag... itemFlags) {
         ItemMeta itemMeta = getItemMeta();
         itemMeta.addItemFlags(itemFlags);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
     public T removeFlags(ItemFlag... itemFlags) {
         ItemMeta itemMeta = getItemMeta();
         itemMeta.removeItemFlags(itemFlags);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
     public T resetFlags() {
         ItemMeta itemMeta = getItemMeta();
         itemMeta.removeItemFlags(itemMeta.getItemFlags().toArray(new ItemFlag[0]));
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
     public T setArmorColor(org.bukkit.Color color) {
-        LeatherArmorMeta itemMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+        LeatherArmorMeta itemMeta = (LeatherArmorMeta) toItemStack().getItemMeta();
         itemMeta.setColor(color);
-        itemStack.setItemMeta(itemMeta);
+        toItemStack().setItemMeta(itemMeta);
         return build();
     }
 
@@ -183,17 +176,21 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     public ItemStack toItemStack() {
-        return itemStack;
+        return stack.getItemStack();
     }
 
     public MenuItemBuilder toMenuItem() {
-        return new MenuItemBuilder(itemStack);
+        return new MenuItemBuilder(getStack());
     }
 
     public abstract T build();
 
     protected ItemMeta getItemMeta() {
-        return itemStack.getItemMeta();
+        return toItemStack().getItemMeta();
+    }
+
+    protected MegaStack getStack() {
+        return stack;
     }
 
     protected TextComponent fromStringToComponent(String string) {

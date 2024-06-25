@@ -2,6 +2,7 @@ package dev.mega.megacore.inventory.builder;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import dev.mega.megacore.inventory.builder.object.BukkitItemStack;
 import dev.mega.megacore.util.MegaCoreUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,7 @@ import java.util.UUID;
 
 public class HeadBuilder extends MegaItemBuilder<HeadBuilder> {
     public HeadBuilder(String texture) {
-        super(new ItemStack(Material.PLAYER_HEAD));
+        super(new BukkitItemStack(new ItemStack(Material.PLAYER_HEAD)));
 
         SkullMeta meta = (SkullMeta) getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), "null");
@@ -25,7 +26,8 @@ public class HeadBuilder extends MegaItemBuilder<HeadBuilder> {
             MegaCoreUtil.getLogger().warning("HeadBuilder cannot create a head with this texture. " +
                     "Report the bug to the developers");
         }
-        itemStack.setItemMeta(meta);
+
+        toItemStack().setItemMeta(meta);
     }
 
     @Override
