@@ -18,18 +18,13 @@ public abstract class Manager implements Reloadable, Comparable<Manager> {
     @Override
     public int compareTo(@NotNull Manager manager) {
         ManagerPriority otherManagerPriority = manager.getClass().getAnnotation(ManagerPriority.class);
-        ManagerPriority thisManagerPriority = this.getClass().getAnnotation(ManagerPriority.class);
+        ManagerPriority thisManagerPriority = getClass().getAnnotation(ManagerPriority.class);
 
-        if (otherManagerPriority == null && thisManagerPriority == null)
-            return 0;
-        else if (otherManagerPriority == null)
-            return 1;
-        else if (thisManagerPriority == null)
-            return -1;
+        if (otherManagerPriority == null && thisManagerPriority == null) return 0;
+        else if (otherManagerPriority == null) return 1;
+        else if (thisManagerPriority == null) return -1;
 
-        int thisEnumPriority = thisManagerPriority.priority().getSlot();
-        int otherEnumPriority = otherManagerPriority.priority().getSlot();
-
-        return thisEnumPriority - otherEnumPriority;
+        return thisManagerPriority.priority().getSlot()
+                - otherManagerPriority.priority().getSlot();
     }
 }
