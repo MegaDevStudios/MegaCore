@@ -81,7 +81,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     public T removeLoreLine(String line) {
-        ItemMeta itemMeta = toItemStack().getItemMeta();
+        ItemMeta itemMeta = getItemMeta();
 
         List<String> lore = new ArrayList<>(itemMeta.getLore());
         lore.remove(line);
@@ -164,7 +164,7 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     }
 
     public T setArmorColor(org.bukkit.Color color) {
-        LeatherArmorMeta itemMeta = (LeatherArmorMeta) toItemStack().getItemMeta();
+        LeatherArmorMeta itemMeta = (LeatherArmorMeta) getItemMeta();
         itemMeta.setColor(color);
         toItemStack().setItemMeta(itemMeta);
         return build();

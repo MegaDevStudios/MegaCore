@@ -1,10 +1,12 @@
 package dev.mega.megacore;
 
 import dev.mega.megacore.config.SubFolder;
+import dev.mega.megacore.listener.server.MenuListener;
 import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;
@@ -58,6 +60,8 @@ public abstract class MegaCore extends JavaPlugin implements Reloadable {
     @Override
     public void onEnable() {
         enable();
+
+        Bukkit.getPluginManager().registerEvents(new MenuListener(), this);
 
         registerCommands();
     }
