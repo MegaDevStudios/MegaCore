@@ -10,6 +10,8 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Represents a configurable object that handles YAML configuration files.
@@ -47,15 +49,28 @@ public abstract class Configurator implements Config {
         return (T) value;
     }
 
+    /**
+     * Gets the path of the configuration file with a default parameter.
+     *
+     * @param def default value you want returned
+     * @return The path of the configuration file.
+     */
     public <T> T getValue(String path, T def) {
         T value = getValue(path);
         return value == null ? def : value;
     }
 
+
+    /**
+     * Gets the colored text of the config file.
+     */
     public String getColoredString(String path) {
         return getColoredString(path, "");
     }
 
+    /**
+     * Gets the colored text of the config file with a default value.
+     */
     public String getColoredString(String path, String def) {
         return getColoredString(path, def, '&');
     }
@@ -68,7 +83,8 @@ public abstract class Configurator implements Config {
         return Color.getTranslated(getValue(path, def), symbol);
     }
 
-    //message: "player award is %MONEY%$"
+    // Choice one method or implement yourself version
+    // 1.
     public String getCompletedString(String path, Object... objects) {
         String string = getValue(path, "");
 
@@ -97,6 +113,26 @@ public abstract class Configurator implements Config {
         }
 
         return String.join("", finalStrings);
+    }
+
+    // 2.
+    public String getCompletedStringV2(String path, Object... objects) {
+        String configString = getValue(path, "");
+
+        Pattern pattern = Pattern.compile("%(.*?)%");
+        Matcher matcher = pattern.matcher(configString);
+
+        StringBuffer result = new StringBuffer();
+
+        int index = 0;
+        while (matcher.find() && index < objects.length) {
+            matcher.appendReplacement(result, objects[index].toString());
+            index++;
+        }
+
+        matcher.appendTail(result);
+
+        return result.toString();
     }
 
     public void setValue(String path, Object value) {
