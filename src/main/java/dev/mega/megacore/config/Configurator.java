@@ -68,6 +68,37 @@ public abstract class Configurator implements Config {
         return Color.getTranslated(getValue(path, def), symbol);
     }
 
+    //message: "player award is %MONEY%$"
+    public String getCompletedString(String path, Object... objects) {
+        String string = getValue(path, "");
+
+        String[] strings = string.split("%");
+        String[] finalStrings = new String[strings.length];
+
+        int index = 0;
+        if (string.startsWith("%")) {
+            for (int i = 0; i < strings.length; i++) {
+                if (i % 2 == 1) {
+                    finalStrings[i] = strings[i];
+                } else {
+                    finalStrings[i] = objects[index].toString();
+                    index++;
+                }
+            }
+        } else {
+            for (int i = 0; i < strings.length; i++) {
+                if (i % 2 == 0) {
+                    finalStrings[i] = strings[i];
+                } else {
+                    finalStrings[i] = objects[index].toString();
+                    index++;
+                }
+            }
+        }
+
+        return String.join("", finalStrings);
+    }
+
     public void setValue(String path, Object value) {
         config.set(path, value);
     }

@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import dev.mega.megacore.inventory.builder.object.BukkitItemStack;
 import dev.mega.megacore.util.MegaCoreUtil;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -26,6 +27,15 @@ public class HeadBuilder extends MegaItemBuilder<HeadBuilder> {
             MegaCoreUtil.getLogger().warning("HeadBuilder cannot create a head with this texture. " +
                     "Report the bug to the developers");
         }
+
+        toItemStack().setItemMeta(meta);
+    }
+
+    public HeadBuilder(OfflinePlayer owner) {
+        super(new BukkitItemStack(new ItemStack(Material.PLAYER_HEAD)));
+        SkullMeta meta = (SkullMeta) getItemMeta();
+
+        meta.setOwningPlayer(owner);
 
         toItemStack().setItemMeta(meta);
     }
