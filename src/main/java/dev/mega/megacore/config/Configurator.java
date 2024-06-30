@@ -43,6 +43,12 @@ public abstract class Configurator implements Config {
         return configFile != null ? configFile.getAbsolutePath() : "unknown";
     }
 
+    /**
+     * Gets the value from path.
+     * @param path Path to value.
+     * @return Value.
+     * @param <T>
+     */
     @SuppressWarnings("unchecked")
     public <T> T getValue(String path) {
         Object value = config.get(path);
@@ -95,6 +101,9 @@ public abstract class Configurator implements Config {
         }
     }
 
+    /**
+     * Saves all changes to file.
+     */
     public void saveConfig() {
         if (configFile != null) {
             try {
@@ -134,6 +143,10 @@ public abstract class Configurator implements Config {
         }
     }
 
+    /**
+     * Loads the configuration.
+     * @return Configuration.
+     */
     public FileConfiguration loadConfig() {
         YamlConfiguration yamlConfig = new YamlConfiguration();
         if (configFile != null && configFile.exists()) {

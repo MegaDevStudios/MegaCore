@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Provides the builder for menu items.
+ */
 public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
     List<ClickAction> clickActions = new ArrayList<>();
 
@@ -15,20 +18,40 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         super(megaStack);
     }
 
+    /**
+     * Adds the click action.
+     * @param action Action.
+     * @return Builder.
+     */
     public MenuItemBuilder addClickAction(ClickAction action) {
         this.clickActions.add(action);
         return this;
     }
 
+    /**
+     * Adds the click action.
+     * @param actions Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addClickActions(ClickAction... actions) {
         return addClickActions(Arrays.asList(actions));
     }
 
+    /**
+     * Adds the click action.
+     * @param actions Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addClickActions(List<ClickAction> actions) {
         this.clickActions.addAll(actions);
         return this;
     }
 
+    /**
+     * Adds the left click action.
+     * @param action Action.
+     * @return Builder.
+     */
     public MenuItemBuilder addLeftClickAction(ClickAction action) {
         this.clickActions.add((event) -> {
             if (!event.isLeftClick()) return;
@@ -37,6 +60,11 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         return this;
     }
 
+    /**
+     * Adds the right click action.
+     * @param action Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addRightClickAction(ClickAction action) {
         this.clickActions.add((event) -> {
             if (!event.isRightClick()) return;
@@ -45,6 +73,11 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         return this;
     }
 
+    /**
+     * Adds the left shift click action.
+     * @param action Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addLeftShiftClickAction(ClickAction action) {
         this.clickActions.add((event) -> {
             if (!event.isLeftClick() && !event.isShiftClick()) return;
@@ -53,6 +86,11 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         return this;
     }
 
+    /**
+     * Adds the right shift click action.
+     * @param action Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addRightShiftClickAction(ClickAction action) {
         this.clickActions.add((event) -> {
             if (!event.isRightClick() && !event.isShiftClick()) return;
@@ -61,6 +99,11 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         return this;
     }
 
+    /**
+     * Adds the shift click action.
+     * @param action Actions.
+     * @return Builder.
+     */
     public MenuItemBuilder addShiftClickAction(ClickAction action) {
         this.clickActions.add((event) -> {
             if (!event.isShiftClick()) return;
@@ -69,10 +112,18 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
         return this;
     }
 
+    /**
+     * Calls all actions of this item.
+     * @param event Event.
+     */
     public void doClickActions(InventoryClickEvent event) {
         clickActions.forEach(action -> action.execute(event));
     }
 
+    /**
+     * Builds the item.
+     * @return Instance.
+     */
     @Override
     public MenuItemBuilder build() {
         return this;

@@ -16,6 +16,10 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Represents an abstract class for builders.
+ * @param <T> Builder type.
+ */
 public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     protected final MegaStack stack;
 

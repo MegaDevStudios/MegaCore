@@ -12,6 +12,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+/**
+ * Represents the head (skull) builder.
+ */
 public class HeadBuilder extends MegaItemBuilder<HeadBuilder> {
     public HeadBuilder(String texture) {
         super(new BukkitItemStack(new ItemStack(Material.PLAYER_HEAD)));

@@ -4,6 +4,9 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Represents an implementation of MegaStack.
+ */
 @Getter
 public class BukkitItemStack implements MegaStack {
     private final ItemStack itemStack;
