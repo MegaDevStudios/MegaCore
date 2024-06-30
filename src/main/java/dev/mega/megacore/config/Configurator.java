@@ -66,7 +66,6 @@ public abstract class Configurator implements Config {
         return value == null ? def : value;
     }
 
-
     /**
      * Gets the colored text of the config file.
      */
