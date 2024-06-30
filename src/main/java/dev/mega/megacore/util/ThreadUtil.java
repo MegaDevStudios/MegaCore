@@ -2,6 +2,9 @@ package dev.mega.megacore.util;
 
 import java.util.HashMap;
 
+/**
+ * Represents the util over threads.
+ */
 public class ThreadUtil {
 
     private static final HashMap<Integer, Thread> threads = new HashMap<>();

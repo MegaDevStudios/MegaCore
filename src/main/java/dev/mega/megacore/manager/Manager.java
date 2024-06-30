@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an abstract class for Managers.
+ */
 public abstract class Manager implements Reloadable, Comparable<Manager> {
     protected final MegaCore megaCore;
     @Getter @Setter

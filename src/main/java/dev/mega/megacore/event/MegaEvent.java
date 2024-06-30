@@ -6,6 +6,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents the abstract event.
+ */
 @Setter @Getter
 public abstract class MegaEvent extends Event {
     protected static final HandlerList handlers = new HandlerList();

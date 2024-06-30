@@ -75,15 +75,31 @@ public abstract class Configurator implements Config {
 
     /**
      * Gets the colored text of the config file with a default value.
+     * @param path Path to configuration value.
+     * @param def Default value.
+     * @return Value.
      */
     public String getColoredString(String path, String def) {
         return getColoredString(path, def, '&');
     }
 
+    /**
+     * Gets the colored text of the config file with a char symbol.
+     * @param path Path to configuration value.
+     * @param symbol Key for colored string. (Example: "&")
+     * @return Value.
+     */
     public String getColoredString(String path, char symbol) {
         return getColoredString(path, "", symbol);
     }
 
+    /**
+     * Gets the colored text of the config file with default value and char symbol.
+     * @param path Path to configuration value.
+     * @param def Default value.
+     * @param symbol Key for colored string. (Example: "&")
+     * @return Value.
+     */
     public String getColoredString(String path, String def, char symbol) {
         return Color.getTranslated(getValue(path, def), symbol);
     }

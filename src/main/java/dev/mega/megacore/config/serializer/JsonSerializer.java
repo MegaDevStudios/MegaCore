@@ -8,8 +8,16 @@ import dev.mega.megacore.util.MegaCoreUtil;
 
 import java.io.*;
 
+/**
+ * Represents the json serializer util.
+ */
 public final class JsonSerializer {
 
+    /**
+     * Serialized the object to file.
+     * @param file File.
+     * @param serializable Object to serialize.
+     */
     public static void serialize(File file, Object serializable) {
         Gson gs = new GsonBuilder().setPrettyPrinting().create();
         String jsonString = gs.toJson(serializable);
@@ -26,6 +34,12 @@ public final class JsonSerializer {
         }
     }
 
+    /**
+     * Deserializes the file to object.
+     * @param file File.
+     * @param clazz Class to make object.
+     * @return Object.
+     */
     public static Object deserialize(File file, Class<?> clazz) {
         Gson gson = new Gson();
 

@@ -6,6 +6,9 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Represents the main util for interactions with megacore functionality.
+ */
 public final class MegaCoreUtil {
 
     private static Logger logger;

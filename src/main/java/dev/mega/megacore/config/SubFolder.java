@@ -83,6 +83,10 @@ public abstract class SubFolder implements Config {
         throw new IllegalArgumentException(String.format(sb.toString(), targetConfig.getName(), visitedClasses));
     }
 
+    /**
+     * Gets the set of all configurators.
+     * @return Set of configurators.
+     */
     public Set<Configurator> getAllConfigs() {
         Set<Configurator> allConfigs = new HashSet<>();
         Stack<Config> stack = new Stack<>();

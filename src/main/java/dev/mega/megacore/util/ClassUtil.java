@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/**
+ * Represents the util for reflection interaction with classes.
+ */
 public class ClassUtil {
 
     public static <T> List<Class<T>> findSubclasses(MegaCore instance, String basePackage, Class<T> type) {

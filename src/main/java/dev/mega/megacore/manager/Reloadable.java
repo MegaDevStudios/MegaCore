@@ -1,5 +1,8 @@
 package dev.mega.megacore.manager;
 
+/**
+ * Represents the interface for reloadable classes.
+ */
 public interface Reloadable {
     /**
      * Reloads the Manager's resources

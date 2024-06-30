@@ -18,6 +18,9 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents the mega manager that handles all managers.
+ */
 @Getter
 public class MegaManager extends Manager {
     @Getter private static MegaManager instance;
