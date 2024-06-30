@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Getter
 /**
  * Class represents a wrapper over HashMap.
  * @param <T> Object as HashMap value.
  */
+@Getter
 public class Data<T> {
     private Map<UUID, T> data = new HashMap<>();
 
@@ -19,10 +19,6 @@ public class Data<T> {
 
     public Data(Map<UUID, T> data) {
         this.data = data;
-    }
-
-    public Map<UUID, T> getData() {
-        return data;
     }
 
     public T getValue(UUID key) {

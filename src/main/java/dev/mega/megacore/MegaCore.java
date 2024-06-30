@@ -6,7 +6,6 @@ import dev.mega.megacore.manager.MegaManager;
 import dev.mega.megacore.manager.Reloadable;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.InvocationTargetException;

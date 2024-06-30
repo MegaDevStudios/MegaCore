@@ -1,4 +1,4 @@
-package dev.mega.megacore.inventory.menu;
+package dev.mega.megacore.listener;
 
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
