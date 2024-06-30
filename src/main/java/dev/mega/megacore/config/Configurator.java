@@ -83,68 +83,6 @@ public abstract class Configurator implements Config {
         return Color.getTranslated(getValue(path, def), symbol);
     }
 
-    // Choice one method or implement yourself version
-    // 1.
-    public String getCompletedString(String path, Object... objects) {
-        String string = getValue(path, "");
-
-        String[] strings = string.split("%");
-        String[] finalStrings = new String[strings.length];
-
-        int index = 0;
-        if (string.startsWith("%")) {
-            for (int i = 0; i < strings.length; i++) {
-                if (i % 2 == 1) {
-                    finalStrings[i] = strings[i];
-                } else {
-                    finalStrings[i] = objects[index].toString();
-                    index++;
-                }
-            }
-        } else {
-            for (int i = 0; i < strings.length; i++) {
-                if (i % 2 == 0) {
-                    finalStrings[i] = strings[i];
-                } else {
-                    finalStrings[i] = objects[index].toString();
-                    index++;
-                }
-            }
-        }
-
-        return String.join("", finalStrings);
-    }
-
-    // 2.
-    public String getCompletedStringV2(String path, Object... objects) {
-        String configString = getValue(path, "");
-
-        Pattern pattern = Pattern.compile("%(.*?)%");
-        Matcher matcher = pattern.matcher(configString);
-
-        StringBuffer result = new StringBuffer();
-
-        int index = 0;
-        while (matcher.find() && index < objects.length) {
-            matcher.appendReplacement(result, objects[index].toString());
-            index++;
-        }
-
-        matcher.appendTail(result);
-
-        return result.toString();
-    }
-
-    public void setValue(String path, Object value) {
-        config.set(path, value);
-    }
-
-    public void setConfigValue(String path, Object value) {
-        setValue(path, value);
-        config.set(path, value);
-        saveConfig();
-    }
-
     /**
      * Deletes the configuration file.
      */
