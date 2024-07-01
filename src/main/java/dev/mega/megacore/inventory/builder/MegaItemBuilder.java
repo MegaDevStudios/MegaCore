@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
  */
 public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
     protected final MegaStack stack;
+    
+    public MegaItemBuilder(ItemStack stack) {
+        this.stack = new BukkitItemStack(stack);
+    }
 
     public MegaItemBuilder(MegaStack stack) {
         this.stack = stack;
-    }
-
-    public MegaItemBuilder(ItemStack stack) {
-        this.stack = new BukkitItemStack(stack);
     }
 
     @SuppressWarnings("unchecked")
