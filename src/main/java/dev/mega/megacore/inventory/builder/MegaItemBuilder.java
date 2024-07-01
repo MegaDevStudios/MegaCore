@@ -1,6 +1,7 @@
 package dev.mega.megacore.inventory.builder;
 
 import dev.mega.megacore.inventory.builder.menu.MenuItemBuilder;
+import dev.mega.megacore.inventory.builder.object.BukkitItemStack;
 import dev.mega.megacore.inventory.builder.object.MegaStack;
 import dev.mega.megacore.util.Color;
 import dev.mega.megacore.util.MegaCoreUtil;
@@ -25,6 +26,10 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
 
     public MegaItemBuilder(MegaStack stack) {
         this.stack = stack;
+    }
+
+    public MegaItemBuilder(ItemStack stack) {
+        this.stack = new BukkitItemStack(stack);
     }
 
     @SuppressWarnings("unchecked")
