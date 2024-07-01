@@ -11,19 +11,10 @@ import java.util.regex.Pattern;
  */
 @Getter
 public final class StringPlaceholders {
-
     private final static StringPlaceholders EMPTY = new StringPlaceholders(Collections.emptyMap(), "%", "%");
 
-    /**
-     * -- GETTER --
-     */
-    private final String startDelimiter, /**
-     * -- GETTER --
-     */
-            endDelimiter;
-    /**
-     * -- GETTER --
-     */
+    private final String startDelimiter, endDelimiter;
+
     private final Map<String, String> placeholders;
 
     private StringPlaceholders(Map<String, String> placeholders, String startDelimiter, String endDelimiter) {

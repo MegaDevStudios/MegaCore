@@ -3,6 +3,7 @@ package dev.mega.megacore.inventory.builder.menu;
 import dev.mega.megacore.inventory.builder.MegaItemBuilder;
 import dev.mega.megacore.inventory.builder.object.MegaStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +17,10 @@ public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
 
     public MenuItemBuilder(MegaStack megaStack) {
         super(megaStack);
+    }
+
+    public MenuItemBuilder(ItemStack stack) {
+        super(stack);
     }
 
     /**
