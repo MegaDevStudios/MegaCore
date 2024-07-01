@@ -15,12 +15,12 @@ import java.util.List;
 public class MenuItemBuilder extends MegaItemBuilder<MenuItemBuilder> {
     List<ClickAction> clickActions = new ArrayList<>();
 
-    public MenuItemBuilder(ItemStack stack) {
-        super(stack);
-    }
-
     public MenuItemBuilder(MegaStack megaStack) {
         super(megaStack);
+    }
+
+    public MenuItemBuilder(ItemStack stack) {
+        super(stack);
     }
 
     /**
