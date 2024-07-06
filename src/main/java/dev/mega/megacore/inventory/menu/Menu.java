@@ -30,21 +30,21 @@ import java.util.List;
  * @since 2024-06-20
  */
 @Getter
-public abstract class AbstractMenu implements InventoryHolder {
+public abstract class Menu implements InventoryHolder {
     private final Player player;
     private final InventoryType type;
     private MenuItemBuilder[] items;
     private Inventory inventory;
     @Setter protected String menuName;
 
-    public AbstractMenu(Player player, int rows, String menuName) {
+    public Menu(Player player, int rows, String menuName) {
         this.player = player;
         this.items = new MenuItemBuilder[rows * 9];
         this.type = InventoryType.CHEST;
         this.menuName = menuName;
     }
 
-    public AbstractMenu(Player player, InventoryType type, String menuName) {
+    public Menu(Player player, InventoryType type, String menuName) {
         this.player = player;
         this.type = type;
         this.menuName = menuName;
