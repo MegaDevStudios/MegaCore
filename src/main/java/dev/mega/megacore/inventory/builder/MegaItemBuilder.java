@@ -32,10 +32,6 @@ public abstract class MegaItemBuilder<T extends MegaItemBuilder<T>> {
         this.stack = stack;
     }
 
-    public MegaItemBuilder(ItemStack stack) {
-        this.stack = new BukkitItemStack(stack);
-    }
-
     @SuppressWarnings("unchecked")
     public T clone() {
         try {

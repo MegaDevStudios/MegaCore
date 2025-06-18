@@ -30,19 +30,23 @@ public class ListData<T> extends Data<List<T>> {
     }
 
     public void addValueForUuid(UUID uuid, T value) {
-        if (contains(uuid)) {
-            getValue(uuid).add(value);
-        } else {
-            List<T> values = new ArrayList<>();
-            values.add(value);
+        getData().computeIfAbsent(uuid, k -> new ArrayList<>()).add(value);
+    }
 
-            getData().put(uuid, values);
-        }
+    public void addValuesForUuid(UUID uuid, List<T> values) {
+        getData().computeIfAbsent(uuid, k -> new ArrayList<>()).addAll(values);
     }
 
     public boolean removeValueForUuid(UUID uuid, T value) {
         if (contains(uuid)) {
             return getValue(uuid).remove(value);
+        }
+        return false;
+    }
+
+    public boolean removeValuesForUuid(UUID uuid, List<T> values) {
+        if (contains(uuid)) {
+            return getValue(uuid).removeAll(values);
         }
         return false;
     }
